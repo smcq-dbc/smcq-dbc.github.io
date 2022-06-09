@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+  <meta name="description" content="从文件建立到现在大概有快半年多了吧，零零散散的记录了下自己的一些问题，现在对自己来说太有用了，毕竟网上的资料质量参差不齐，下面这些问题解决方法几乎都是自己亲测有效的，没成功的都备注了。(不定期更新一下，也算给自己做个备忘录)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习中遇到的一些问题">
+<meta property="og:url" content="http://example.com/2022/04/17/%E5%AD%A6%E4%B9%A0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="smcq&#39;s blog">
+<meta property="og:description" content="从文件建立到现在大概有快半年多了吧，零零散散的记录了下自己的一些问题，现在对自己来说太有用了，毕竟网上的资料质量参差不齐，下面这些问题解决方法几乎都是自己亲测有效的，没成功的都备注了。(不定期更新一下，也算给自己做个备忘录)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-17T05:37:02.000Z">
+<meta property="article:modified_time" content="2022-04-17T05:47:57.906Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/04/17/%E5%AD%A6%E4%B9%A0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>学习中遇到的一些问题 | smcq's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smcq's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">不认,不输  脚踏实地</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/17/%E5%AD%A6%E4%B9%A0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smcq's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          学习中遇到的一些问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-17 13:37:02 / 修改时间：13:47:57" itemprop="dateCreated datePublished" datetime="2022-04-17T13:37:02+08:00">2022-04-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p> 从文件建立到现在大概有快半年多了吧，零零散散的记录了下自己的一些问题，现在对自己来说太有用了，毕竟网上的资料质量参差不齐，下面这些问题解决方法几乎都是自己亲测有效的，没成功的都备注了。(不定期更新一下，也算给自己做个备忘录)</p>
+<span id="more"></span>
+
+<h3 id="置顶"><a href="#置顶" class="headerlink" title="置顶"></a>置顶</h3><p><b>1,vscode配置C语言运行调试，昨晚多亏cxw表哥。</b></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/JLouis94/article/details/108897919">https://blog.csdn.net/JLouis94/article/details/108897919</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77074009">https://zhuanlan.zhihu.com/p/77074009</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85273055">https://zhuanlan.zhihu.com/p/85273055</a></p>
+<p>弄了半天发现好像还是要确保打开.vscode配置文件。。。</p>
+<p><strong>2,计算机教育中缺失的一课</strong></p>
+<p><a target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/">https://missing-semester-cn.github.io/</a></p>
+<p><strong>3,github加速</strong>    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/tc310/p/14432137.html">加速国内 Github 访问，下载，的9种方案！ - tc310 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com.cnpmjs.org/">https://github.com.cnpmjs.org</a></p>
+<p><a target="_blank" rel="noopener" href="https://hub.fastgit.org/">https://hub.fastgit.org</a></p>
+<p><strong>4,终端走代理</strong>    </p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/46973701">https://zhuanlan.zhihu.com/p/46973701</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039686752">https://segmentfault.com/a/1190000039686752</a></p>
+<pre class="line-numbers language-http" data-language="http"><code class="language-http">Windows
+cmd设置方式
+set http_proxy=http://127.0.0.1:1080
+set https_proxy=http://127.0.0.1:1080
+cmd还原
+set http_proxy=
+set https_proxy=
+powershell
+$env:http_proxy="http://127.0.0.1:1080"
+$env:https_proxy="http://127.0.0.1:1080"
+$env:http_proxy=""
+$env:https_proxy=""
+linux &amp;&amp; mac
+export http_proxy=http://127.0.0.1:1080
+export https_proxy=$http_proxy (临时生效)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><del><strong>5,科学上网</strong></del></p>
+<p><strong>6, wsl管理</strong>    <a target="_blank" rel="noopener" href="https://www.niconya.com/bv/555d/">https://www.niconya.com/bv/555d/</a>  wsl –shutdown</p>
+<p><strong>7,8神的GitHub</strong> <strong>(misc几乎AK)</strong>  <a target="_blank" rel="noopener" href="https://github.com/davidcheyenneone/CTF">https://github.com/davidcheyenneone/CTF</a></p>
+<hr>
+<p>1，重启apache    <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1626890">如何启动，停止和重启Apache - 云+社区 - 腾讯云 (tencent.com)</a></p>
+<p>2, 文件上传时$_FILES为空(我写成$FILES了。。。)   <a target="_blank" rel="noopener" href="https://www.php.cn/php-weizijiaocheng-388813.html">https://www.php.cn/php-weizijiaocheng-388813.html</a></p>
+<p>3，Ubuntu卸载docker  <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1541011">如何在ubuntu 中彻底删除docker - 云+社区 - 腾讯云 (tencent.com)</a></p>
+<p>4，像往常一样在虚拟机运行docker靶场练习，结果在外部死活无法访问,docker内也无法访问外网，试了好多方法都没用，我裂开</p>
+<p>然后重启docker服务行了。。。不过还是保存一下这篇文章，说不定用得上<a target="_blank" rel="noopener" href="https://www.jb51.net/article/204358.htm">https://www.jb51.net/article/204358.htm</a></p>
+<p>不行重启虚拟机</p>
+<p>5,学习面向对象时写了class book extends Book{},报错name已经被用，查了php大小写敏感问题，或许日后绕过有用 <a target="_blank" rel="noopener" href="https://www.php.cn/php-ask-431747.html">php大小写敏感吗？-PHP问题-PHP中文网</a></p>
+<p>6, ubuntu连不上网，无网络图标  <a target="_blank" rel="noopener" href="https://blog.csdn.net/SOPHIA16527/article/details/107360879">ubuntu 20.04 连不上网，没有网络图标，只有127.0.0.1_SOPHIA16527的博客-CSDN博客</a></p>
+<p>7,Ubuntu修改MySQL密码  <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26164609/article/details/106881079">Ubunto20.04安装MySQL并修改root用户密码（Linux安装mysql root用户无法登陆）_itjiangpo的博客-CSDN博客</a></p>
+<p>8,docker容器内安装vim    <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/28bf568ace3d">docker容器中安装vim - 简书 (jianshu.com)</a></p>
+<p>9,docker基本操作    <a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-container-usage.html">Docker 容器使用 | 菜鸟教程 (runoob.com)</a></p>
+<p>10,<a target="_blank" rel="noopener" href="https://blog.csdn.net/dongdong9223/article/details/83059265">使用Dockerfile创建镜像，创建容器并运行</a>    dockerfile,第一次用</p>
+<p>11,<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32447301/article/details/79387649">Docker删除容器与镜像</a></p>
+<p>12,docker安装lamp(本意是安装，结果是拉一个弄好的镜像，都一样)    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/108926507">https://zhuanlan.zhihu.com/p/108926507</a></p>
+<p>13,容器文件导入导出    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/yoyoketang/p/12131002.html">https://www.cnblogs.com/yoyoketang/p/12131002.html</a></p>
+<p>14,dirsearch扫描冒号时输出无效目录名    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/tysec/p/14974595.html">https://www.cnblogs.com/tysec/p/14974595.html</a></p>
+<p>15,git提交项目    <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1504684">https://cloud.tencent.com/developer/article/1504684</a></p>
+<p>16, linux编译运行C文件    <a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/2009576162a8eb8b0721b494.html">https://jingyan.baidu.com/article/2009576162a8eb8b0721b494.html</a></p>
+<p>17, vscode配置C/C++环境，可惜没成功    <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41044540/article/details/107326769">https://blog.csdn.net/qq_41044540/article/details/107326769</a></p>
+<p>18，python实现文件上传    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/165961817">Python接口测试文件上传实例解析 - 知乎 (zhihu.com)</a></p>
+<p>19,Ubuntu设置终端透明度    <a target="_blank" rel="noopener" href="https://blog.csdn.net/li_666/article/details/52885822">https://blog.csdn.net/li_666/article/details/52885822</a></p>
+<p>20,github加速    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/tc310/p/14432137.html">加速国内 Github 访问，下载，的9种方案！ - tc310 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com.cnpmjs.org/">https://github.com.cnpmjs.org</a></p>
+<p><a target="_blank" rel="noopener" href="https://hub.fastgit.org/">https://hub.fastgit.org</a></p>
+<p>21,notion入门教程    <a target="_blank" rel="noopener" href="https://linmi.cc/1713.html">如何快速上手 Notion | Notion 入门教程 - Linmi</a></p>
+<p>22,dirsearch因为冒号导致目录名无效    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/tysec/p/14974595.html">https://www.cnblogs.com/tysec/p/14974595.html</a></p>
+<pre class="line-numbers language-http" data-language="http"><code class="language-http">python3 dirsearch.py -u 192.168.63.131:8001 -e php -o reports/test.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>23,docker容器文件拷贝    <a target="_blank" rel="noopener" href="https://blog.csdn.net/dongdong9223/article/details/71425077">https://blog.csdn.net/dongdong9223/article/details/71425077</a></p>
+<p>24,docker换源    </p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904152007442446">https://juejin.cn/post/6844904152007442446</a>    （推荐）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/fenglibing/article/details/92090925">Ubuntu Linux下修改docker镜像源</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/405fe33b9032">Docker中国源 - 简书 (jianshu.com)</a></p>
+<p>25,微软商店打不开，关闭代理</p>
+<p>26,关闭wsl    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/351880793">https://zhuanlan.zhihu.com/p/351880793</a></p>
+<p>27,linux压缩与解压    <a target="_blank" rel="noopener" href="https://blog.csdn.net/timo1160139211/article/details/69948540">https://blog.csdn.net/timo1160139211/article/details/69948540</a></p>
+<p>28,编译32位程序    <a target="_blank" rel="noopener" href="https://www.kaifa99.com/C/article_191661">https://www.kaifa99.com/C/article_191661</a></p>
+<p>29,phpstudy vscode配置xdebug    <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44937674/article/details/104696857">https://blog.csdn.net/weixin_44937674/article/details/104696857</a>    （虽然没成功。。不知道为啥</p>
+<p>30,ubuntu配置ssh    <a target="_blank" rel="noopener" href="https://blog.csdn.net/netwalk/article/details/12952051">https://blog.csdn.net/netwalk/article/details/12952051</a></p>
+<p>31,docker配ssh    <a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/detail/170581">https://bbs.huaweicloud.com/blogs/detail/170581</a>  docker从commit中配置ssh  &amp;&amp;  Dockerfile配置ssh</p>
+<p>​                                <a target="_blank" rel="noopener" href="https://www.cnblogs.com/devilmaycry812839668/p/13691236.html">https://www.cnblogs.com/devilmaycry812839668/p/13691236.html</a></p>
+<p>​                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27068845/article/details/77015432">https://blog.csdn.net/qq_27068845/article/details/77015432</a>  修改配置文件允许root登录</p>
+<p>32,docker添加php扩展xdebug    <a target="_blank" rel="noopener" href="https://blog.csdn.net/WatermelonMk/article/details/103256459">https://blog.csdn.net/WatermelonMk/article/details/103256459</a>  (未成功)</p>
+<p>​                   docker安装php扩展    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/yinguohai/p/11329273.html">https://www.cnblogs.com/yinguohai/p/11329273.html</a> </p>
+<p>33,xdebug调试配置  国光  <a target="_blank" rel="noopener" href="https://www.sqlsec.com/2020/09/xdebug.html">https://www.sqlsec.com/2020/09/xdebug.html</a>               (终于成功了)</p>
+<p>追加：今天早上另起了个本地测试站，不知道是不是php8的原因，又没成功调试。。换回我的php7,按照国光师傅的文章配。</p>
+<p>34,windows快捷键    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54749176">https://zhuanlan.zhihu.com/p/54749176</a>  AIt + Tab 列出应用列表</p>
+<p>35, 用&lt;&gt;绕过select关键字检查，为啥呢？  <a target="_blank" rel="noopener" href="https://blog.csdn.net/ancan8807/article/details/101268368">https://blog.csdn.net/ancan8807/article/details/101268368</a></p>
+<p>36,选择当前一行：</p>
+<pre class="line-numbers language-none"><code class="language-none">VScode中如何快速选择一整行？ 你继续按Ctrl + L就会再选择一行，如此重复，简单吧。 当然，还有一种通用的选择方式，就是鼠标三击，也是选择整行。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>37,sql注入爆数据    <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/875d95f8d3cf">https://www.jianshu.com/p/875d95f8d3cf</a></p>
+<p>38,C语言输出到文件   <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1544633">https://cloud.tencent.com/developer/article/1544633</a></p>
+<p>39,Listary破解版下载    <a target="_blank" rel="noopener" href="https://www.126g.com/soft/377.html#">https://www.126g.com/soft/377.html#</a></p>
+<p>40,docker desktop问题解决    <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/09d53c822cf8">https://www.jianshu.com/p/09d53c822cf8</a></p>
+<p>41,ubuntu18安装指定php版本    <a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904020419543053">https://juejin.cn/post/6844904020419543053</a></p>
+<p>42,notepad++设置Linux换行符    <a target="_blank" rel="noopener" href="https://blog.csdn.net/xxm524/article/details/46848287">https://blog.csdn.net/xxm524/article/details/46848287</a></p>
+<h3 id="43-Dockerfile构建一个自己的镜像"><a href="#43-Dockerfile构建一个自己的镜像" class="headerlink" title="43,Dockerfile构建一个自己的镜像"></a>43,Dockerfile构建一个自己的镜像</h3><p>这个是 ubuntu18.04-php7.0-apache2</p>
+<pre class="line-numbers language-dockerfile" data-language="dockerfile"><code class="language-dockerfile">FROM ubuntu:18.04
+
+RUN sed -i s@&#x2F;archive.ubuntu.com&#x2F;@&#x2F;mirrors.aliyun.com&#x2F;@g &#x2F;etc&#x2F;apt&#x2F;sources.list \
+&amp;&amp; apt-get update \
+&amp;&amp; apt-get -y install software-properties-common \
+&amp;&amp; add-apt-repository ppa:ondrej&#x2F;php \
+&amp;&amp; apt-get update \
+&amp;&amp; DEBIAN_FRONTEND&#x3D;noninteractive apt-get -y install php7.0 \
+&amp;&amp; echo &quot;ServerName localhost:80&quot; &gt;&gt; &#x2F;etc&#x2F;apache2&#x2F;apache2.conf
+
+#COPY src &#x2F;var&#x2F;www&#x2F;html
+
+#CMD sed -i &quot;s&#x2F;\$FLAG&#x2F;$FLAG&#x2F;&quot; &#x2F;var&#x2F;www&#x2F;html&#x2F;fffffllllllaaaaagggg.php &amp;&amp; service apache2 start &amp;&amp; export FLAG&#x3D;not_flag &amp;&amp; FLAG&#x3D;not_flag &amp;&amp; exec &#x2F;bin&#x2F;bash -c &quot;trap : TERM INT; sleep infinity &amp; wait&quot;
+
+EXPOSE 80<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>做到一个题，感觉挺有意思，想减少点waf扔到新生平台上,但考点create_function在php7.2后被弃用了，找了个php7.0的docker镜像结果打开就是phpmyadmin，有点懵，而且他们的镜像有点大，突然想自己做一个docker镜像以后用不就很方便吗，第一次做，用了大半天，遇到好多问题，多亏谷歌和lbh帮我解决了很多疑惑。记录下问题和解决方案。</p>
+<p>(1) <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/113666046">https://zhuanlan.zhihu.com/p/113666046</a>  参考这篇文章，最开始我用commit做的php7.0-apache2的镜像，bh说会有很多不必要的操作，可能镜像比较大，所以我又用dockerfile做了个，比那个小了3M，但收获很多。</p>
+<p>(2)不知道Windows的换行符能不能用，懒得测了，用notepad++换成Linux的换行符。</p>
+<p><strong>(3)Ubuntu18.04安装php7.0</strong> <a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904020419543053">https://juejin.cn/post/6844904020419543053</a></p>
+<p>(4)自动回答标准输入问题。   安装php时需要输入地区，不过我选的是忽略这个问题，反正没影响 DEBIAN_FRONTEND=noninteractive ,其他回答yes or no 的加个 -y 就可以  </p>
+<p><a target="_blank" rel="noopener" href="https://www.cyberciti.biz/faq/explain-debian_frontend-apt-get-variable-for-ubuntu-debian/">https://www.cyberciti.biz/faq/explain-debian_frontend-apt-get-variable-for-ubuntu-debian/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/leon_wzm/article/details/78260795">https://blog.csdn.net/leon_wzm/article/details/78260795</a> </p>
+<p>(5)阿帕奇的一个问题，我是追加到配置文件里解决的，但好像不加也可以，不太清楚。因为我之前把启动apache的命令写到 RUN 里了才启动不起来 <a target="_blank" rel="noopener" href="https://blog.csdn.net/yuanyuan_186/article/details/51316637">https://blog.csdn.net/yuanyuan_186/article/details/51316637</a></p>
+<p><strong>(6)查看docker容器日志</strong>    </p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010086763">https://segmentfault.com/a/1190000010086763</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1eb1d1d3f25e">https://www.jianshu.com/p/1eb1d1d3f25e</a></p>
+<p>44,Windows插入耳机无法识别 (解决)    <a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/ca41422ffff5025fae99edc9.html">https://jingyan.baidu.com/article/ca41422ffff5025fae99edc9.html</a></p>
+<p>45,php构造pop链时关于属性赋值的方式    <a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000008124893/a-1020000008125099">https://segmentfault.com/q/1010000008124893/a-1020000008125099</a></p>
+<p>46,php存在命名空间构造pop链最后序列化的时候可以用全局代码    <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9274412/php-namespaces-in-a-single-file-with-a-global-namespace">https://stackoverflow.com/questions/9274412/php-namespaces-in-a-single-file-with-a-global-namespace</a></p>
+<p>47,配置GitHub图床 (成功)   <a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904137407086600">https://juejin.cn/post/6844904137407086600</a></p>
+<p>48,python安装虚拟环境    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60647332">https://zhuanlan.zhihu.com/p/60647332</a></p>
+<p>49，pip &amp; pip3 安装库的时候报错或连接失败，试试关闭代理</p>
+<p>50,hack the box VPN配置方法</p>
+<p>Linux    <a target="_blank" rel="noopener" href="https://www.sohu.com/a/288310203_120055360">https://www.sohu.com/a/288310203_120055360</a></p>
+<p>Windows    <a target="_blank" rel="noopener" href="https://www.bvpn.co/cn/faq/29/">https://www.bvpn.co/cn/faq/29/</a></p>
+<p>51,python爬虫报错 </p>
+<p>Max retries exceeded with url: /app/charge/qryRealFee (Caused by SSLError(SSLEOFError(8, u’EOF occurred in violation of protocol (_ssl.c:727)’),))</p>
+<p>关了代理解决了。</p>
+<p>52,phpstudy上传文件返回500错误    <a target="_blank" rel="noopener" href="https://blog.csdn.net/zhaosai315/article/details/38296113">https://blog.csdn.net/zhaosai315/article/details/38296113</a></p>
+<p>53,看国光大佬的文章练习ssrf,在docker里总是出问题，在虚拟机试了试。。发现是php的curl模块没安装。。</p>
+<p><strong>54，ubuntu换源</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sed -i s@&#x2F;archive.ubuntu.com&#x2F;@&#x2F;mirrors.aliyun.com&#x2F;@g &#x2F;etc&#x2F;apt&#x2F;sources.list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">echo &quot;ZGViIGh0dHA6Ly9taXJyb3JzLmFsaXl1bi5jb20vdWJ1bnR1LyBmb2NhbCBtYWluIHJlc3RyaWN0ZWQgdW5pdmVyc2UgbXVsdGl2ZXJzZSAKCmRlYiBodHRwOi8vbWlycm9ycy5hbGl5dW4uY29tL3VidW50dS8gZm9jYWwtc2VjdXJpdHkgbWFpbiByZXN0cmljdGVkIHVuaXZlcnNlIG11bHRpdmVyc2UgCgpkZWIgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS91YnVudHUvIGZvY2FsLXVwZGF0ZXMgbWFpbiByZXN0cmljdGVkIHVuaXZlcnNlIG11bHRpdmVyc2UgCgpkZWIgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS91YnVudHUvIGZvY2FsLXByb3Bvc2VkIG1haW4gcmVzdHJpY3RlZCB1bml2ZXJzZSBtdWx0aXZlcnNlIAoKZGViIGh0dHA6Ly9taXJyb3JzLmFsaXl1bi5jb20vdWJ1bnR1LyBmb2NhbC1iYWNrcG9ydHMgbWFpbiByZXN0cmljdGVkIHVuaXZlcnNlIG11bHRpdmVyc2UgCgpkZWItc3JjIGh0dHA6Ly9taXJyb3JzLmFsaXl1bi5jb20vdWJ1bnR1LyBmb2NhbCBtYWluIHJlc3RyaWN0ZWQgdW5pdmVyc2UgbXVsdGl2ZXJzZSAKCmRlYi1zcmMgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS91YnVudHUvIGZvY2FsLXNlY3VyaXR5IG1haW4gcmVzdHJpY3RlZCB1bml2ZXJzZSBtdWx0aXZlcnNlIAoKZGViLXNyYyBodHRwOi8vbWlycm9ycy5hbGl5dW4uY29tL3VidW50dS8gZm9jYWwtdXBkYXRlcyBtYWluIHJlc3RyaWN0ZWQgdW5pdmVyc2UgbXVsdGl2ZXJzZSAKCmRlYi1zcmMgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS91YnVudHUvIGZvY2FsLXByb3Bvc2VkIG1haW4gcmVzdHJpY3RlZCB1bml2ZXJzZSBtdWx0aXZlcnNlIAoKZGViLXNyYyBodHRwOi8vbWlycm9ycy5hbGl5dW4uY29tL3VidW50dS8gZm9jYWwtYmFja3BvcnRzIG1haW4gcmVzdHJpY3RlZCB1bml2ZXJzZSBtdWx0aXZlcnNlIGZvY2Fs&quot; | base64 -d &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>debian换源</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">echo &quot;ZGViIGh0dHA6Ly9taXJyb3JzLmFsaXl1bi5jb20vZGViaWFuLyBidXN0ZXIgbWFpbiBub24tZnJlZSBjb250cmliCmRlYi1zcmMgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS9kZWJpYW4vIGJ1c3RlciBtYWluIG5vbi1mcmVlIGNvbnRyaWIKZGViIGh0dHA6Ly9taXJyb3JzLmFsaXl1bi5jb20vZGViaWFuLXNlY3VyaXR5IGJ1c3Rlci91cGRhdGVzIG1haW4KZGViLXNyYyBodHRwOi8vbWlycm9ycy5hbGl5dW4uY29tL2RlYmlhbi1zZWN1cml0eSBidXN0ZXIvdXBkYXRlcyBtYWluCmRlYiBodHRwOi8vbWlycm9ycy5hbGl5dW4uY29tL2RlYmlhbi8gYnVzdGVyLXVwZGF0ZXMgbWFpbiBub24tZnJlZSBjb250cmliCmRlYi1zcmMgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS9kZWJpYW4vIGJ1c3Rlci11cGRhdGVzIG1haW4gbm9uLWZyZWUgY29udHJpYgpkZWIgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS9kZWJpYW4vIGJ1c3Rlci1iYWNrcG9ydHMgbWFpbiBub24tZnJlZSBjb250cmliCmRlYi1zcmMgaHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbS9kZWJpYW4vIGJ1c3Rlci1iYWNrcG9ydHMgbWFpbiBub24tZnJlZSBjb250cmli&quot; | base64 -d &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>55,Docker容器里的centos、unbuntu无法使用 systemctl 命令的解决方案    <a target="_blank" rel="noopener" href="https://blog.csdn.net/u013829518/article/details/99681154">https://blog.csdn.net/u013829518/article/details/99681154</a></p>
+<p>56,centos7安装redis    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34527270">https://zhuanlan.zhihu.com/p/34527270</a></p>
+<p>57,mysql空密码修改密码    <a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_27087071/article/details/78932166">https://blog.csdn.net/sinat_27087071/article/details/78932166</a></p>
+<p>58,chm文件打开后只显示目录不显示内容    <a target="_blank" rel="noopener" href="https://www.febdays.com/office/4342.html">https://www.febdays.com/office/4342.html</a></p>
+<p>59，picgo上传失败，日志422错误，搜了下是同名文件的问题。(我开了时间戳重命名啊，不管了，能用就行)  <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/blob/dev/FAQ.md">https://github.com/Molunerfinn/PicGo/blob/dev/FAQ.md</a></p>
+<p>60,php调试超时    <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_28854171/article/details/115232102">https://blog.csdn.net/weixin_28854171/article/details/115232102</a></p>
+<p>61,pip换源    <a target="_blank" rel="noopener" href="https://blog.csdn.net/xuezhangjun0121/article/details/81664260">https://blog.csdn.net/xuezhangjun0121/article/details/81664260</a></p>
+<p>62, <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47615495/docker-uses-an-image-skipping-docker-compose">Docker: Uses an image, skipping (docker-compose)</a></p>
+<p>63,python设置代理    <a target="_blank" rel="noopener" href="https://blog.csdn.net/whatday/article/details/112169945">https://blog.csdn.net/whatday/article/details/112169945</a></p>
+<p>64,python下载文件的多种方式    <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42419491/article/details/106052394">https://blog.csdn.net/qq_42419491/article/details/106052394</a></p>
+<p>65,ssh设置root远程登陆    <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1496006">https://cloud.tencent.com/developer/article/1496006</a></p>
+<p>66,测试时安装某个cms的sql文件命名有空格，搜了下怎么解决  <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36126787/article/details/54143085">https://blog.csdn.net/qq_36126787/article/details/54143085</a></p>
+<p>67,耳机可以播放系统声音但浏览器无声音，可能是插件问题    <a target="_blank" rel="noopener" href="http://www.xitongcheng.com/jiaocheng/dnrj_article_66557.html">http://www.xitongcheng.com/jiaocheng/dnrj_article_66557.html</a></p>
+<p>68,磁力链接下载工具（<del>再也不用迅雷了</del>）<a target="_blank" rel="noopener" href="https://www.freedownloadmanager.org/zh/download.htm">https://www.freedownloadmanager.org/zh/download.htm</a>  （为啥这个在我这好像下载不了。。呜呜呜，sb迅雷，只能忍了，搜了个脚本还是调用的迅雷的接口，艹，这绝对是最后一次！）</p>
+<p>69,wsl命令迁移目录    <a target="_blank" rel="noopener" href="https://www.xiaobo.li/notes/archives/1949">https://www.xiaobo.li/notes/archives/1949</a></p>
+<p>70，Linux下mysql8修改密码    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/141778941">https://zhuanlan.zhihu.com/p/141778941</a></p>
+<p>71，mysql8可以命令行用密码登陆但php连接错误，可以用旧版方式（新版该怎么用呢）    <a target="_blank" rel="noopener" href="https://blog.csdn.net/fms5201314/article/details/108291574">https://blog.csdn.net/fms5201314/article/details/108291574</a></p>
+<p>72，ping命令 安装    apt-get install inetutils-ping</p>
+<p>73，之前用过几次编译安装，感觉有点麻烦，前天跟着P神的文章编译apache，搜下编译安装到底是啥，就几个命令，也不是很麻烦嘛</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/39101098ebbe">https://www.jianshu.com/p/39101098ebbe</a></p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/surjur/blog/349464">https://my.oschina.net/surjur/blog/349464</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27825451/article/details/102605219">https://blog.csdn.net/qq_27825451/article/details/102605219</a></p>
+<p>74，摸了一下午，打开电脑看下，突然提示连接不上虚拟机了，想打开虚拟机目录看看啥情况，好家伙，盘都没了。。搜了下，叫掉盘？带电重启了两次还是没用，有点担心，毕竟重要的一些文件还在这个盘上，另外这个盘不会才一个月就变砖了吧。。按另一个方法，断电重启解决。</p>
+<p>75,linux下环境变量配置    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/youyoui/p/10680329.html">https://www.cnblogs.com/youyoui/p/10680329.html</a></p>
+<p>76,docker 在Windows10报错，（虽然我是因为掉盘了，但这篇文章还是挺好的）    <a target="_blank" rel="noopener" href="https://forums.docker.com/t/solved-docker-failed-to-start-docker-desktop-for-windows/106976/5">https://forums.docker.com/t/solved-docker-failed-to-start-docker-desktop-for-windows/106976/5</a></p>
+<p>77，php开启报错    <a target="_blank" rel="noopener" href="https://blog.csdn.net/lilongsy/article/details/84327434">https://blog.csdn.net/lilongsy/article/details/84327434</a></p>
+<p>78，好家伙，快一个月没用了，一生成文章直接报错给我整懵了，搜到了这篇    <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43874301/article/details/113773036">https://blog.csdn.net/weixin_43874301/article/details/113773036</a>  大括号…发的SSTI的wp…</p>
+<p>79， python -c ‘import pty; pty.spawn(“/bin/bash”)’</p>
+<p>80，centos换源    <a target="_blank" rel="noopener" href="https://techglimpse.com/failed-metadata-repo-appstream-centos-8/">https://techglimpse.com/failed-metadata-repo-appstream-centos-8/</a></p>
+<p>81，win7虚拟机安装vmware tools    <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040641247">https://segmentfault.com/a/1190000040641247</a></p>
+<p>82，virtualenv创建虚拟环境并指定版本    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38457004">https://zhuanlan.zhihu.com/p/38457004</a></p>
+<p>​        python虚拟环境中使用pip    <a target="_blank" rel="noopener" href="https://blog.csdn.net/Linrena/article/details/116497771">https://blog.csdn.net/Linrena/article/details/116497771</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/27/dasctf%20x%20su-WriteUp/" rel="prev" title="dasctf x su-WriteUp">
+      <i class="fa fa-chevron-left"></i> dasctf x su-WriteUp
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/09/%E7%AC%AC%E4%B8%80%E6%AC%A1awd%E5%B0%8F%E7%BB%93/" rel="next" title="第一次awd小结">
+      第一次awd小结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%AE%E9%A1%B6"><span class="nav-number">1.</span> <span class="nav-text">置顶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#43-Dockerfile%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">2.</span> <span class="nav-text">43,Dockerfile构建一个自己的镜像</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <!--<span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>-->
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+</body>
+</html>

